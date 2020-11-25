@@ -7,10 +7,16 @@ const app = express();
 
 const mysql = require('mysql');
 const db = mysql.createPool({
+  /*
   host: 'localhost',
   user: 'root',
   password: 'password',
   database: 'test',
+   */
+  user: 'b5bd55a728c04c',  
+  host: 'us-cdbr-east-02.cleardb.com',
+  password: 'd3895006',
+  database: 'heroku_93cc4493cfbc7cc',
 
 })
 
