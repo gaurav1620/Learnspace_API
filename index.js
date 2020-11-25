@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const sql = require('./db');
 
 const PORT = process.env.PORT || 8000;
 
@@ -49,14 +50,23 @@ app.post('/students', (req, res) => {
   })
 })
 
-app.get('/students', (req, res) => {
-  const query = 'SELECT * FROM student';
-  db.query(query, (err, data) => {
-    if(err)
-      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    return res.send({"success":true, "data" : data});
-  })
-})
+// app.get('/students', (req, res) => {
+//   const query = 'SELECT * FROM student';
+//   db.query(query, (err, data) => {
+//     if(err)
+//       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+//     return res.send({"success":true, "data" : data});
+//   })
+// })
+
+// app.get('/students', (req, res) => {
+//   sql.query("SELECT * FROM student;"), (err, data) => {
+//     if(err)
+//       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+//     return res.send({"success":true, "data" : data});
+//   };
+  
+// })
 
 app.get('/foo', (req, res) => {
   res.send({'foo':'bar'});
