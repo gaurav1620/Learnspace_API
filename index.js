@@ -1,24 +1,26 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const sql = require('./db');
+const mysql = require('mysql-ssh');
 
 const PORT = process.env.PORT || 8000;
 
 const app = express();
 
-const mysql = require('mysql');
-const db = mysql.createPool({
-  /*
-  host: 'localhost',
-  user: 'root',
-  password: 'password',
-  database: 'test',
-   */
-  user: 'b5bd55a728c04c',  
-  host: 'us-cdbr-east-02.cleardb.com',
-  password: 'd3895006',
-  database: 'heroku_93cc4493cfbc7cc',
-
+var connection = mysql.connect(
+    {
+        host: 'ec2-3-82-248-102.compute-1.amazonaws.com',
+        port: 69,
+        user: 'rterror',
+        password: 'runtimeterror'
+    },
+    {
+        host: '127.0.0.1',
+        user: 'root',
+        password: 'RuntimeTerror@123',
+        database: 'testone'
+    }
+).catch(e => {
+    console.log(e);
 })
 
 app.use(bodyParser.json());
@@ -50,28 +52,20 @@ app.post('/students', (req, res) => {
   })
 })
 
-// app.get('/students', (req, res) => {
-//   const query = 'SELECT * FROM student';
-//   db.query(query, (err, data) => {
-//     if(err)
-//       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-//     return res.send({"success":true, "data" : data});
-//   })
-// })
-
-// app.get('/students', (req, res) => {
-//   sql.query("SELECT * FROM student;"), (err, data) => {
-//     if(err)
-//       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-//     return res.send({"success":true, "data" : data});
-//   };
-  
-// })
+app.get('/students', (req, res) => {
+  connection.then(client => {
+    client.query("SELECT * FROM student;", (err, data) => {
+      if (err)
+        return res.status(400).send({ "success": false, "error": err.name, "message": err.message });
+      return res.send({ "success": true, "data": data });
+    });
+  })
+})
 
 app.get('/foo', (req, res) => {
   res.send({'foo':'bar'});
 })
 
-app.listen(PORT, () => {
-  console.log(`APP is now running on port ${PORT}!`);
+  app.listen(PORT, () => {
+    console.log(`APP is now running on port ${PORT}!`);
 })
