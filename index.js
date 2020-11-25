@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const PORT = process.env.PORT || 8000;
+
 const app = express();
 
 const mysql = require('mysql');
@@ -61,6 +63,6 @@ app.get('/', (req, res) => {
   })
 })
 
-app.listen(8000, () => {
-  console.log("APP is now running !");
+app.listen(PORT, () => {
+  console.log(`APP is now running on port ${PORT}!`);
 })
