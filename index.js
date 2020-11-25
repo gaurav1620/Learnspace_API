@@ -52,15 +52,8 @@ app.get('/students', (req, res) => {
   })
 })
 
-app.get('/', (req, res) => {
-  db.query('SELECT * FROM student;', (err, dat) => {
-    if(err){
-      console.log(err);
-      return res.status(400).send({"error" : "Error occured during exection of SQL query", "name": err.name, "desc" : err.description});
-    }
-
-    return res.send({"dat": dat});
-  })
+app.get('/foo', (req, res) => {
+  res.send({'foo':'bar'});
 })
 
 app.listen(PORT, () => {
