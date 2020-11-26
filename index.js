@@ -57,15 +57,15 @@ app.get('/students', (req, res) => {
   })
 })
 
-// app.get('/student/:id', (req, res) => {
-//   var id = req.params.id;
-//   const query = 'SELECT * FROM student where student_id = ?';
-//   db.query(query, id, (err, data) => {
-//     if(err)
-//       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-//     return res.send({"success":true, "data" : data});
-//   })
-// })
+app.get('/student/:id', (req, res) => {
+  var id = req.params.id;
+  const query = 'SELECT * FROM student where student_id = ?';
+  db.query(query, id, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
 
 app.get('/foo', (req, res) => {
   res.send({'foo':'bar'});
