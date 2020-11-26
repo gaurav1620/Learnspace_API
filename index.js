@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
+const credentials = require('./credentials');
 
 const PORT = process.env.PORT || 8000;
 
@@ -14,10 +15,10 @@ const db = mysql.createPool({
   database: 'test',
    */
   multipleStatements: true,
-  user: 'b5bd55a728c04c',
-  host: 'us-cdbr-east-02.cleardb.com',
-  password: 'd3895006',
-  database: 'heroku_93cc4493cfbc7cc',
+  host: credentials.host,
+  user: credentials.user,
+  password: credentials.password,
+  database: credentials.database,
 })
 
 app.use(bodyParser.json());
