@@ -27,6 +27,8 @@ CREATE TABLE assignment (
   _id INT PRIMARY KEY AUTO_INCREMENT,
   classroom_id INT NOT NULL,
   description VARCHAR(200), 
+  due_date DATE,
+  max_marks INT(3)
 );
 
 CREATE TABLE submissions (
@@ -34,10 +36,14 @@ CREATE TABLE submissions (
   data BLOB NOT NULL,
   assignment_id INT NOT NULL,
   student_id INT NOT NULL,
+  marks_obtained INT(3) NOT NULL
 )
 
 CREATE TABLE attachments (
   _id INT PRIMARY KEY AUTO_INCREMENT,
   data BLOB NOT NULL,
   assignment_id INT NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  description VARCHAR(200),
+  is_study_material BOOL
 )
