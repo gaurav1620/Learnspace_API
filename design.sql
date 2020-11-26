@@ -16,11 +16,13 @@ CREATE TABLE teacher (
   password VARCHAR(50) NOT NULL, 
 );
 
-CREATE TABLE classroom (
+CREATE TABLE course (
   _id INT PRIMARY KEY AUTO_INCREMENT,
   teacher_id INT NOT NULL,
   name VARCHAR(50) NOT NULL, 
-  description VARCHAR(200), 
+  description VARCHAR(200),
+  year VARCHAR(4),
+  department VARCHAR(10) 
 );
 
 CREATE TABLE assignment (
