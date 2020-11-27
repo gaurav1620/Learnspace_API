@@ -71,7 +71,7 @@ app.get('/droptables', (req, res) => {
     );\
     CREATE TABLE assignment (\
       _id INT PRIMARY KEY AUTO_INCREMENT,\
-      classroom_id INT NOT NULL,\
+      course_id INT NOT NULL,\
       description VARCHAR(200),\
       due_date DATE,\
       max_marks INT(3),\
@@ -215,8 +215,8 @@ app.get('/records/:student_id', (req,res) => {
 }) 
 
 app.post('/assignment', (req, res) => {
-  const query = `INSERT INTO assignment(classroom_id, description, due_date,max_marks, is_study_material)\
-                 VALUES('${req.body.classroom_id}, ${req.body.description}', '${req.body.due_date}', '${req.body.max_marks}', '${req.body.is_study_material}');`;
+  const query = `INSERT INTO assignment(course_id, description, due_date,max_marks, is_study_material)\
+                 VALUES('${req.body.course_id}, ${req.body.description}', '${req.body.due_date}', '${req.body.max_marks}', '${req.body.is_study_material}');`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -225,7 +225,7 @@ app.post('/assignment', (req, res) => {
 })
 
 app.get('/assignmentbyid/:id', (req,res) => {
-  const query = `SELECT * FROM classroom WHERE _id=${req.params.id}`;
+  const query = `SELECT * FROM assignment WHERE _id=${req.params.id}`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -234,8 +234,8 @@ app.get('/assignmentbyid/:id', (req,res) => {
 })
 
 // get all assignments in a classroom 
-app.get('/assignment/:classroom_id', (req,res) => {
-  const query = `SELECT * FROM classroom WHERE classroom_id=${req.params.classroom_id};`;
+app.get('/assignment/:course_id', (req,res) => {
+  const query = `SELECT * FROM assignment WHERE course_id=${req.params.course_id};`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -265,7 +265,7 @@ app.get('/attachmentsbyid/:id', (req,res) => {
 
 // get all the attachemnts for a particular assignment
 app.get('/attachments/:assignment_id', (req,res) => {
-  const query = `SELECT * FROM attachments WHERE classroom_id=${req.params.assignment_id};`;
+  const query = `SELECT * FROM attachments WHERE assignment_id=${req.params.assignment_id};`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});

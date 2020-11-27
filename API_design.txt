@@ -40,7 +40,7 @@
   *POST /assignment
   *
   *@params:
-  *         classroom_id  : string (required);
+  *         course_id     : string (required);
   *         description   : string (required);
   *         due_date      : string (required);
   *         max_marks     : int (required);

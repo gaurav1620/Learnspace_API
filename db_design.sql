@@ -34,7 +34,7 @@ CREATE TABLE records(
 
 CREATE TABLE assignment (
   _id INT PRIMARY KEY AUTO_INCREMENT,
-  classroom_id INT NOT NULL,
+  course_id INT NOT NULL,
   description VARCHAR(200), 
   due_date DATE,
   max_marks INT(3),
