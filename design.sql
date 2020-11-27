@@ -15,7 +15,7 @@ CREATE TABLE teacher (
   email VARCHAR(50) NOT NULL UNIQUE,
   password VARCHAR(50) NOT NULL, 
 );
-
+-- course is same as classroom
 CREATE TABLE course (
   _id INT PRIMARY KEY AUTO_INCREMENT,
   teacher_id INT NOT NULL,
@@ -25,20 +25,28 @@ CREATE TABLE course (
   department VARCHAR(10) 
 );
 
+-- used to check what courses is a student registered to 
+CREATE TABLE records(
+  student_id INT,
+  course_id INT,
+  PRIMARY KEY (student_id, course_id)
+);
+
 CREATE TABLE assignment (
   _id INT PRIMARY KEY AUTO_INCREMENT,
   classroom_id INT NOT NULL,
   description VARCHAR(200), 
   due_date DATE,
-  max_marks INT(3)
+  max_marks INT(3),
+  is_study_material BOOLEAN NOT NULL
 );
 
 CREATE TABLE submissions (
-  _id INT PRIMARY KEY AUTO_INCREMENT,
   data BLOB NOT NULL,
   assignment_id INT NOT NULL,
   student_id INT NOT NULL,
-  marks_obtained INT(3) NOT NULL
+  marks_obtained INT(3) NOT NULL,
+  PRIMARY KEY (assignment_id, student_id)
 )
 
 CREATE TABLE attachments (
@@ -47,5 +55,4 @@ CREATE TABLE attachments (
   assignment_id INT NOT NULL,
   name VARCHAR(100) NOT NULL,
   description VARCHAR(200),
-  is_study_material BOOL
 )

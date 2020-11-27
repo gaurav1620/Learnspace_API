@@ -35,8 +35,9 @@ app.get('/droptables', (req, res) => {
   const query = '\
     DROP TABLE IF EXISTS student; \
     DROP TABLE IF EXISTS teacher; \
-    DROP TABLE IF EXISTS classroom; \
+    DROP TABLE IF EXISTS course; \
     DROP TABLE IF EXISTS assignment; \
+    DROP TABLE IF EXISTS records; \
     DROP TABLE IF EXISTS submissions; \
     DROP TABLE IF EXISTS attachments; \
     CREATE TABLE student (\
@@ -55,27 +56,40 @@ app.get('/droptables', (req, res) => {
       email VARCHAR(50) NOT NULL UNIQUE,\
       password VARCHAR(50) NOT NULL\
     );\
-    CREATE TABLE classroom (\
+    CREATE TABLE course (\
       _id INT PRIMARY KEY AUTO_INCREMENT,\
       teacher_id INT NOT NULL,\
       name VARCHAR(50) NOT NULL,\
-      description VARCHAR(200)\
+      description VARCHAR(200),\
+      year VARCHAR(4),\
+      department VARCHAR(10)\
+    );\
+    CREATE TABLE records(\
+      student_id INT,\
+      course_id INT,\
+      PRIMARY KEY (student_id, course_id)\
     );\
     CREATE TABLE assignment (\
       _id INT PRIMARY KEY AUTO_INCREMENT,\
       classroom_id INT NOT NULL,\
-      description VARCHAR(200)\
+      description VARCHAR(200),\
+      due_date DATE,\
+      max_marks INT(3),\
+      is_study_material BOOLEAN NOT NULL\
     );\
     CREATE TABLE submissions (\
-      _id INT PRIMARY KEY AUTO_INCREMENT,\
       data BLOB NOT NULL,\
       assignment_id INT NOT NULL,\
-      student_id INT NOT NULL\
+      student_id INT NOT NULL,\
+      marks_obtained INT(3) NOT NULL,\
+      PRIMARY KEY (assignment_id, student_id)\
     );\
     CREATE TABLE attachments (\
       _id INT PRIMARY KEY AUTO_INCREMENT,\
       data BLOB NOT NULL,\
-      assignment_id INT NOT NULL\
+      assignment_id INT NOT NULL,\
+      name VARCHAR(100) NOT NULL,\
+      description VARCHAR(200)\
     );';
   db.query(query, (err, dat) => {
     if(err)
@@ -84,7 +98,7 @@ app.get('/droptables', (req, res) => {
   })
 })
 
-app.post('/students', (req, res) => {
+app.post('/student', (req, res) => {
   console.log(req.body);
   const query = `INSERT INTO student(fname, lname, email, password, year, department) VALUES('${req.body.fname}', '${req.body.lname}', '${req.body.email}', '${req.body.password}', '${req.body.year}', '${req.body.department}');`;
   console.log(query);
@@ -95,8 +109,8 @@ app.post('/students', (req, res) => {
   })
 })
 
-app.get('/students', (req, res) => {
-  const query = 'SELECT * FROM student';
+app.get('/student', (req, res) => {
+  const query = 'SELECT * FROM student;';
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -104,8 +118,8 @@ app.get('/students', (req, res) => {
   })
 })
 
-app.get('/students/:id', (req, res) => {
-  const query = `SELECT * FROM student WHERE _id=${req.params.id}`;
+app.get('/student/:id', (req, res) => {
+  const query = `SELECT * FROM student WHERE _id=${req.params.id};`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -113,7 +127,7 @@ app.get('/students/:id', (req, res) => {
   })
 })
 
-app.post('/teachers', (req, res) => {
+app.post('/teacher', (req, res) => {
   console.log(req.body);
   const query = `INSERT INTO teacher(fname, lname, email, password) VALUES('${req.body.fname}', '${req.body.lname}', '${req.body.email}', '${req.body.password}');`;
   console.log(query);
@@ -124,8 +138,8 @@ app.post('/teachers', (req, res) => {
   })
 })
 
-app.get('/teachers', (req, res) => {
-  const query = 'SELECT * FROM teacher';
+app.get('/teacher', (req, res) => {
+  const query = 'SELECT * FROM teacher;';
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -133,8 +147,8 @@ app.get('/teachers', (req, res) => {
   })
 })
 
-app.get('/teachers/:id', (req, res) => {
-  const query = `SELECT * FROM teacher WHERE _id=${req.params.id}`;
+app.get('/teacher/:id', (req, res) => {
+  const query = `SELECT * FROM teacher WHERE _id=${req.params.id};`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -142,8 +156,9 @@ app.get('/teachers/:id', (req, res) => {
   })
 })
 
-app.post('/classroom', (req, res) => {
-  const query = `INSERT INTO classroom(teacher_id, name, description) VALUES('${req.body.teacher_id}, ${req.body.name}', '${req.body.description}');`;
+app.post('/course', (req, res) => {
+  const query = `INSERT INTO course(teacher_id, name, description, year, department)\
+                 VALUES('${req.body.teacher_id}', '${req.body.name}', '${req.body.description}', '${req.body.year}', '${req.body.department}');`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -151,8 +166,47 @@ app.post('/classroom', (req, res) => {
   })
 })
 
-app.get('/classroom/:id', (req,res) => {
-  const query = `SELECT * FROM classroom WHERE _id=${req.params.id}`;
+app.get('/course', (req, res) => {
+  const query = 'SELECT * FROM course;';
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+
+app.get('/course/:id', (req,res) => {
+  const query = `SELECT * FROM course WHERE _id=${req.params.id}`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+}) 
+
+app.post('/records', (req, res) => {
+  const query = `INSERT INTO records(student_id, course_id)\
+                 VALUES('${req.body.student_id}', '${req.body.course_id}');`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+app.get('/records', (req, res) => {
+  const query = 'SELECT * FROM records;';
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+
+app.get('/records/:student_id', (req,res) => {
+  const query = `SELECT * FROM records WHERE student_id=${req.params.student_id}`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -161,7 +215,8 @@ app.get('/classroom/:id', (req,res) => {
 }) 
 
 app.post('/assignment', (req, res) => {
-  const query = `INSERT INTO assignment(classroom_id, description) VALUES('${req.body.classroom_id}, ${req.body.description}');`;
+  const query = `INSERT INTO assignment(classroom_id, description, due_date,max_marks, is_study_material)\
+                 VALUES('${req.body.classroom_id}, ${req.body.description}', '${req.body.due_date}', '${req.body.max_marks}', '${req.body.is_study_material}');`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -169,8 +224,78 @@ app.post('/assignment', (req, res) => {
   })
 })
 
+app.get('/assignmentbyid/:id', (req,res) => {
+  const query = `SELECT * FROM classroom WHERE _id=${req.params.id}`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+// get all assignments in a classroom 
 app.get('/assignment/:classroom_id', (req,res) => {
-  const query = `SELECT * FROM classroom WHERE classroom_id=${req.params.classroom_id}`;
+  const query = `SELECT * FROM classroom WHERE classroom_id=${req.params.classroom_id};`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+}) 
+
+app.post('/attachments', (req, res) => {
+  const query = `INSERT INTO attachments(data, assignment_id, name, description)\
+                 VALUES('${req.body.data}, ${req.body.assignment_id}', '${req.body.name}', '${req.body.description}');`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+//get a particular attachment
+app.get('/attachmentsbyid/:id', (req,res) => {
+  const query = `SELECT * FROM attachments WHERE _id=${req.params.id};`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+// get all the attachemnts for a particular assignment
+app.get('/attachments/:assignment_id', (req,res) => {
+  const query = `SELECT * FROM attachments WHERE classroom_id=${req.params.assignment_id};`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+}) 
+
+app.post('/submissions', (req, res) => {
+  const query = `INSERT INTO submissions(data, assignment_id, student_id, marks_obtained)\
+                 VALUES('${req.body.data}, ${req.body.assignment_id}', '${req.body.name}', '${req.body.description}');`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+// returns all submissions for a particular assignment
+app.get('/submissions/:assignment_id', (req,res) => {
+  const query = `SELECT * FROM submissions WHERE assignment_id=${req.params.assignment_id};`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+}) 
+
+
+app.get('/submissions/:assignment_id/:student_id', (req,res) => {
+  const query = `SELECT * FROM submissions WHERE assignment_id=${req.params.assignment_id} AND student_id=${req.params.student_id};`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
