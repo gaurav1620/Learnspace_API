@@ -1,0 +1,83 @@
+  *POST /student
+  *
+  *@params:
+  *         fname       : string (required);
+  *         lname       : string (required);
+  *         email       : string (required, unique);
+  *         password    : string (required);
+  *         year        : string (required);
+  *         department  : string (required);
+  *
+
+
+  *POST /teacher
+  *
+  *@params:
+  *         fname       : string (required);
+  *         lname       : string (required);
+  *         email       : string (required, unique);
+  *         password    : string (required);
+  *
+
+
+  *POST /course
+  *
+  *@params:
+  *         teacher_id  : int (required);
+  *         name        : string (required);
+  *         description : string (required);
+  *         year        : string;
+  *         department  : string;
+  
+
+  *POST /records
+  *
+  *@params:
+  *         student_id: int (required);
+  *         course_id : int (required);
+ 
+
+  *POST /assignment
+  *
+  *@params:
+  *         course_id     : string (required);
+  *         description   : string (required);
+  *         due_date      : string (required);
+  *         max_marks     : int (required);
+  *         is_study_material     : Boolean (required);
+  *
+  
+  *POST /attachments
+  *
+  *@params:
+  *         data            : file (required);
+  *         assignment_id   : int (required);
+  *         name            : string (required);
+  *         description     : string (required);
+
+  
+  *POST /submissions
+  *
+  *@params:
+  *         data            : file (required);
+  *         assignment_id   : int (required);
+  *         student_id      : int (required);
+  *         marks_obtained  : int (required);
+
+  *GET /student                                   ==>  Returns a list of all students
+  *GET /student/{id}                              ==>  Returns info of a single student with given id
+  *GET /teacher                                   ==>  Returns a list of all teacher
+  *GET /teacher/{id}                              ==>  Returns info of a single teacher with given id
+  *GET /course                                    ==>  Returns a list of all courses
+  *GET /course/{id}                               ==>  Returns info of a single course with given id
+  *GET /records                                   ==>  Returns a list of all records
+  *GET /records/{student_id}                      ==>  Returns list of all records a student is enrolled to
+  *GET /assignment                                ==>  Returns a list of all assignments
+  *GET /assignmentbyid/{id}                       ==>  Returns info of a single assignment with given id
+  *GET /assignment/{course_id}                    ==>  Returns all assignments in a course
+  *GET /attachments                               ==>  Returns a list of all attachments
+  *GET /attachmentsbyid/{id}                      ==>  Returns  a particular attachment
+  *GET /attachments/{assignment_id}               ==>  Returns  a attachments for a particular assignment
+  *GET /submissions                               ==>  Returns a list of all submissions
+  *GET /submissions/{assignment_id}               ==>  Returns all submissions for a particular assignment (useful for teacher)
+  *GET /submissions/{assignment_id}/{student_id}  ==>  Returns all submissions by a student for a particular assignment (useful for teacher)
