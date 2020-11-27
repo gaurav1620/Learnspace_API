@@ -47,6 +47,7 @@
   *         is_study_material     : Boolean (required);
   *
   
+
   *POST /attachments
   *
   *@params:
@@ -63,6 +64,24 @@
   *         assignment_id   : int (required);
   *         student_id      : int (required);
   *         marks_obtained  : int (required);
+
+
+  *GET /student_login
+  *
+  *@params:
+  *         email           :string (required);
+  *         password        :string (required);
+
+
+  *GET /teacher_login
+  *
+  *@params:
+  *         email           :string (required);
+  *         password        :string (required);
+
+
+
+
 
   *GET /student                                   ==>  Returns a list of all students
   *GET /student/{id}                              ==>  Returns info of a single student with given id
