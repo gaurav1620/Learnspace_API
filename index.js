@@ -153,6 +153,17 @@ app.get('/teachers/:id', (req, res) => {
   })
 })
 
+app.get('/teacher_login', (req, res) => {
+  const query = `SELECT * FROM teacher WHERE email = '${req.body.email}' AND password = '${req.body.password}'`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    if(data == '')
+      return res.send({"teacher": "not found"});
+    return res.send({"teacher": "found", "data": data});
+  })
+})
+
 app.post('/classroom', (req, res) => {
   const query = `INSERT INTO classroom(teacher_id, name, description) VALUES('${req.body.teacher_id}, ${req.body.name}', '${req.body.description}');`;
   db.query(query, (err, data) => {
