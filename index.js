@@ -158,7 +158,7 @@ app.get('/teacher/:id', (req, res) => {
 
 app.post('/course', (req, res) => {
   const query = `INSERT INTO course(teacher_id, name, description, year, department)\
-                 VALUES('${req.body.teacher_id}', '${req.body.name}', '${req.body.description}', '${req.body.year}', '${req.body.department}');`;
+                 VALUES(${req.body.teacher_id}, '${req.body.name}', '${req.body.description}', '${req.body.year}', '${req.body.department}');`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -187,7 +187,7 @@ app.get('/course/:id', (req,res) => {
 
 app.post('/records', (req, res) => {
   const query = `INSERT INTO records(student_id, course_id)\
-                 VALUES('${req.body.student_id}', '${req.body.course_id}');`;
+                 VALUES(${req.body.student_id}, ${req.body.course_id});`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -216,7 +216,7 @@ app.get('/records/:student_id', (req,res) => {
 
 app.post('/assignment', (req, res) => {
   const query = `INSERT INTO assignment(course_id, description, due_date,max_marks, is_study_material)\
-                 VALUES('${req.body.course_id}, ${req.body.description}', '${req.body.due_date}', '${req.body.max_marks}', '${req.body.is_study_material}');`;
+                 VALUES(${req.body.course_id}, '${req.body.description}', '${req.body.due_date}', ${req.body.max_marks}, ${req.body.is_study_material});`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -245,7 +245,7 @@ app.get('/assignment/:course_id', (req,res) => {
 
 app.post('/attachments', (req, res) => {
   const query = `INSERT INTO attachments(data, assignment_id, name, description)\
-                 VALUES('${req.body.data}, ${req.body.assignment_id}', '${req.body.name}', '${req.body.description}');`;
+                 VALUES(${req.body.data}, ${req.body.assignment_id}, '${req.body.name}', '${req.body.description}');`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -275,7 +275,7 @@ app.get('/attachments/:assignment_id', (req,res) => {
 
 app.post('/submissions', (req, res) => {
   const query = `INSERT INTO submissions(data, assignment_id, student_id, marks_obtained)\
-                 VALUES('${req.body.data}, ${req.body.assignment_id}', '${req.body.name}', '${req.body.description}');`;
+                 VALUES(${req.body.data}, ${req.body.assignment_id}, '${req.body.name}', '${req.body.description}');`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
