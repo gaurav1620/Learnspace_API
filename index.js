@@ -127,7 +127,7 @@ app.get('/student/:id', (req, res) => {
   })
 })
 
-app.get('/student_login', (req, res) => {
+app.post('/student_login', (req, res) => {
   const query = `SELECT * FROM student WHERE email = '${req.body.email}' AND password = '${req.body.password}'`;
   db.query(query, (err, data) => {
     if(err)
@@ -177,7 +177,7 @@ app.post('/course', (req, res) => {
   })
 })
 
-app.get('/teacher_login', (req, res) => {
+app.post('/teacher_login', (req, res) => {
   const query = `SELECT * FROM teacher WHERE email = '${req.body.email}' AND password = '${req.body.password}'`;
   db.query(query, (err, data) => {
     if(err)
