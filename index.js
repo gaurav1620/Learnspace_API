@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors')
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const credentials = require('./credentials');
@@ -6,6 +7,7 @@ const credentials = require('./credentials');
 const PORT = process.env.PORT || 8000;
 
 const app = express();
+app.use(cors());
 
 const db = mysql.createPool({
   /*
