@@ -168,6 +168,16 @@ app.get('/teacher/:id', (req, res) => {
     return res.send({"success":true, "data" : data});
   })
 })
+app.post('/teacher_login', (req, res) => {
+  const query = `SELECT * FROM teacher WHERE email = '${req.body.email}' AND password = '${req.body.password}';`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    if(data == '')
+      return res.send({"teacher": "not found"});
+    return res.send({"teacher": "found", "data": data});
+  })
+})
 
 app.post('/course', (req, res) => {
   const query = `INSERT INTO course(teacher_id, name, description, year, department)\
@@ -179,26 +189,14 @@ app.post('/course', (req, res) => {
   })
 })
 
-app.post('/teacher_login', (req, res) => {
-  const query = `SELECT * FROM teacher WHERE email = '${req.body.email}' AND password = '${req.body.password}'`;
-  db.query(query, (err, data) => {
-    if(err)
-      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    if(data == '')
-      return res.send({"teacher": "not found"});
-    return res.send({"teacher": "found", "data": data});
-  })
-})
-
-app.post('/classroom', (req, res) => {
-  const query = `INSERT INTO classroom(teacher_id, name, description) VALUES('${req.body.teacher_id}, ${req.body.name}', '${req.body.description}');`;
+app.get('/course', (req,res) => {
+  const query = `SELECT * FROM course;`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
     return res.send({"success":true, "data" : data});
   })
-})
-
+}) 
 
 app.get('/course/:id', (req,res) => {
   const query = `SELECT * FROM course WHERE _id=${req.params.id}`;
