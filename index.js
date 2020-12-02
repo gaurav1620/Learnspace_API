@@ -69,7 +69,7 @@ app.get('/droptables', (req, res) => {
     );\
     CREATE TABLE records(\
       student_id INT,\
-      course_id INT,\
+      course_code VARCHAR(10),\
       PRIMARY KEY (student_id, course_id)\
     );\
     CREATE TABLE assignment (\
@@ -250,8 +250,7 @@ app.get('/records', (req, res) => {
 })
 
 app.get('/coursesenrolled/:student_id', (req,res) => {
-
-  const query = `SELECT * FROM course WHERE corse_code IN (SELECT course_code FROM records WHERE student_id=${req.params.student_id});`;
+  const query = `SELECT * from course WHERE _id IN(SELECT course_id FROM records WHERE student_id=${req.params.student_id});`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
