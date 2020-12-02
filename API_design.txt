@@ -65,8 +65,13 @@
   *         student_id      : int (required);
   *         marks_obtained  : int (required);
 
+  *POST /gradesubmission/:sub_id
+  *
+  *@params:
+  *         marks : int (required);
 
-  *GET /student_login
+  
+*GET /student_login
   *
   *@params:
   *         email           :string (required);
