@@ -251,7 +251,7 @@ app.get('/records', (req, res) => {
 
 app.get('/coursesenrolled/:student_id', (req,res) => {
 
-  const query = `SELECT * from records WHERE student_id=${req.params.student_id}`;
+  const query = `SELECT * FROM course WHERE corse_code IN (SELECT course_code FROM records WHERE student_id=${req.params.student_id});`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
