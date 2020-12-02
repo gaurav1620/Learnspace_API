@@ -21,8 +21,9 @@ CREATE TABLE course (
   teacher_id INT NOT NULL,
   name VARCHAR(50) NOT NULL, 
   description VARCHAR(200),
-  year VARCHAR(4),
-  department VARCHAR(10) 
+  year VARCHAR(4) NOT NULL,
+  department VARCHAR(10) NOT NULL,
+  course_code VARCHAR(10) NOT NULL UNIQUE 
 );
 
 -- used to check what courses is a student registered to 
