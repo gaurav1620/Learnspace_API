@@ -100,6 +100,8 @@ app.get('/droptables', (req, res) => {
   })
 })
 
+
+//STUDENT
 app.post('/student', (req, res) => {
   console.log(req.body);
   const query = `INSERT INTO student(fname, lname, email, password, year, department) VALUES('${req.body.fname}', '${req.body.lname}', '${req.body.email}', '${req.body.password}', '${req.body.year}', '${req.body.department}');`;
@@ -140,6 +142,8 @@ app.post('/student_login', (req, res) => {
   })
 })
 
+
+//TEACHER
 app.post('/teacher', (req, res) => {
   console.log(req.body);
   const query = `INSERT INTO teacher(fname, lname, email, password) VALUES('${req.body.fname}', '${req.body.lname}', '${req.body.email}', '${req.body.password}');`;
@@ -179,9 +183,13 @@ app.post('/teacher_login', (req, res) => {
   })
 })
 
+
+//COURSE
+
+//create new course
 app.post('/course', (req, res) => {
-  const query = `INSERT INTO course(teacher_id, name, description, year, department)\
-                 VALUES(${req.body.teacher_id}, '${req.body.name}', '${req.body.description}', '${req.body.year}', '${req.body.department}');`;
+  const query = `INSERT INTO course(teacher_id, name, description, year, department, course_code)\
+                 VALUES(${req.body.teacher_id}, '${req.body.name}', '${req.body.description}', '${req.body.year}', '${req.body.department}', '${req.body.course_code}');`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -207,6 +215,20 @@ app.get('/course/:id', (req,res) => {
   })
 }) 
 
+//course existence check
+app.post('/course_check', (req, res) => {
+  const query = `SELECT * FROM course WHERE course_id=${req.body.course_id};`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+
+//RECORDS
+
+//join course
 app.post('/records', (req, res) => {
   const query = `INSERT INTO records(student_id, course_id)\
                  VALUES(${req.body.student_id}, ${req.body.course_id});`;
