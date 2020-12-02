@@ -258,6 +258,15 @@ app.get('/records/:student_id', (req,res) => {
   })
 }) 
 
+app.get('/records/:course_id', (req,res) => {
+  const query = `SELECT * FROM records WHERE course_id=${req.params.course_id}`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
 app.post('/assignment', (req, res) => {
   const query = `INSERT INTO assignment(course_id, description, due_date,max_marks, is_study_material)\
                  VALUES(${req.body.course_id}, '${req.body.description}', '${req.body.due_date}', ${req.body.max_marks}, ${req.body.is_study_material});`;
