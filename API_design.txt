@@ -65,8 +65,13 @@
   *         student_id      : int (required);
   *         marks_obtained  : int (required);
 
+  *POST /gradesubmission/:sub_id
+  *
+  *@params:
+  *         marks : int (required);
 
-  *GET /student_login
+  
+*GET /student_login
   *
   *@params:
   *         email           :string (required);
@@ -90,7 +95,8 @@
   *GET /course                                    ==>  Returns a list of all courses
   *GET /course/{id}                               ==>  Returns info of a single course with given id
   *GET /records                                   ==>  Returns a list of all records
-  *GET /records/{student_id}                      ==>  Returns list of all records a student is enrolled to
+  *GET /records/{course_id}                       ==>  Returns list of all students enrolled to the course
+  *GET /coursesenrolled/{student_id}              ==>  Returns list of all courses enrolled by the student
   *GET /assignment                                ==>  Returns a list of all assignments
   *GET /assignmentbyid/{id}                       ==>  Returns info of a single assignment with given id
   *GET /assignment/{course_id}                    ==>  Returns all assignments in a course
