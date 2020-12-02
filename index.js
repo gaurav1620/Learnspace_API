@@ -65,6 +65,7 @@ app.get('/droptables', (req, res) => {
       description VARCHAR(200),\
       year VARCHAR(4),\
       department VARCHAR(10)\
+      course_code VARCHAR(10) NOT NULL UNIQUE\
     );\
     CREATE TABLE records(\
       student_id INT,\
@@ -206,8 +207,8 @@ app.get('/course', (req,res) => {
   })
 }) 
 
-app.get('/course/:id', (req,res) => {
-  const query = `SELECT * FROM course WHERE _id=${req.params.id}`;
+app.get('/course/:course_code', (req,res) => {
+  const query = `SELECT * FROM course WHERE course_code='${req.params.course_code}';`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -248,15 +249,15 @@ app.get('/records', (req, res) => {
   })
 })
 
+app.get('/coursesenrolled/:student_id', (req,res) => {
 
-app.get('/records/:student_id', (req,res) => {
-  const query = `SELECT * FROM records WHERE student_id=${req.params.student_id}`;
+  const query = `SELECT * from records WHERE student_id=${req.params.student_id}`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
     return res.send({"success":true, "data" : data});
   })
-}) 
+})
 
 app.get('/records/:course_id', (req,res) => {
   const query = `SELECT * FROM records WHERE course_id=${req.params.course_id}`;
