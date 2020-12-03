@@ -396,6 +396,7 @@ app.get('/createproc', (req, res)=>{
                     END//\n\
                   DELIMITER ;\n\
                 ";
+  console.log(query);
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
