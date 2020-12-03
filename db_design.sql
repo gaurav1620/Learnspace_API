@@ -57,3 +57,28 @@ CREATE TABLE attachments (
   name VARCHAR(100) NOT NULL,
   description VARCHAR(200),
 )
+
+**************STORED PROCEDURE******************
+
+
+
+First create a table with cols
+ass_id     AVG    MAX    MIN    Absentees 
+
+****EXXAMPLE****
+
+delimiter //
+CREATE PROCEDURE display_book()
+                      -> BEGIN
+                      -> SELECT * FROM book;
+                      -> END //
+call display_book(); //
+
+***** sendReport*******
+
+DELIMITER //
+CREATE PROCEDURE sendreport(IN ass_id integer)
+  BEGIN
+    SELECT AVG(marks), MAX(marks), MIN(marks), COUNT(marks) FROM submissions WHERE assignment_id=ass_id;
+  END//
+DELIMITER ;

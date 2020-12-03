@@ -387,6 +387,21 @@ app.get('/describe/:tablename', (req, res)=>{
   })
 })
 
+app.get('/createproc', (req, res)=>{
+  const query = `DELIMITER //
+                    DROP PROCEDURE IF EXISTS 'send_report' //
+                    CREATE PROCEDURE send_report(IN course_id integer)
+                    BEGIN
+                      SELECT AVG(marks), MAX(marks), MIN(marks), COUNT(marks) FROM sub;
+                    END//
+                  DELIMITER ;
+                `;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
 app.listen(PORT, () => {
   console.log(`APP is now running on port ${PORT}!`);
 })
