@@ -388,13 +388,13 @@ app.get('/describe/:tablename', (req, res)=>{
 })
 
 app.get('/createproc', (req, res)=>{
-  const query = "DELIMITER //\
-                  DROP PROCEDURE IF EXISTS 'send_report'//\
-                    CREATE PROCEDURE send_report(IN course_id integer)\
-                      BEGIN\
-                        SELECT AVG(marks), MAX(marks), MIN(marks), COUNT(marks) FROM sub;\
-                    END//\
-                  DELIMITER ;\
+  const query = "DELIMITER //\n\
+                  DROP PROCEDURE IF EXISTS 'send_report'//\n\
+                    CREATE PROCEDURE send_report(IN course_id integer)\n\
+                      BEGIN\n\
+                        SELECT AVG(marks), MAX(marks), MIN(marks), COUNT(marks) FROM sub;\n\
+                    END//\n\
+                  DELIMITER ;\n\
                 ";
   db.query(query, (err, data) => {
     if(err)
