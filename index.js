@@ -349,7 +349,7 @@ app.post('/submissions', (req, res) => {
   })
 })
 
-app.get('/updatesubmissionstable', (req.res) => {
+app.get('/updatesubmissionstable', (req,res) => {
   const query = 'ALTER TABLE submissions MODIFY data BLOB;'
   db.query(query, (err, data) => {
     if(err)
