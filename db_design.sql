@@ -77,7 +77,8 @@ call display_book(); //
 ***** sendReport*******
 
 DELIMITER //
-CREATE PROCEDURE sendreport(IN ass_id integer)
+DROP PROCEDURE IF EXISTS send_report//
+CREATE PROCEDURE send_report(IN ass_id integer)
   BEGIN
     SELECT AVG(marks), MAX(marks), MIN(marks), COUNT(marks) FROM submissions WHERE assignment_id=ass_id;
   END//

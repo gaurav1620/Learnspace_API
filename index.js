@@ -388,14 +388,14 @@ app.get('/describe/:tablename', (req, res)=>{
 })
 
 app.get('/createproc', (req, res)=>{
-  const query = "DELIMITER //\n\
-                  DROP PROCEDURE IF EXISTS 'send_report'//\n\
-                    CREATE PROCEDURE send_report(IN course_id integer)\n\
-                      BEGIN\n\
-                        SELECT AVG(marks), MAX(marks), MIN(marks), COUNT(marks) FROM sub;\n\
-                    END//\n\
-                  DELIMITER ;\n\
-                ";
+  const query = `DELIMITER //
+                  DROP PROCEDURE IF EXISTS send_report//
+                    CREATE PROCEDURE send_report(IN ass_id integer)
+                      BEGIN
+                        SELECT AVG(marks), MAX(marks), MIN(marks), COUNT(marks) FROM submissions WHERE assignment_id=ass_id;
+                    END//
+                  DELIMITER ;
+                `;
   console.log(query);
   db.query(query, (err, data) => {
     if(err)
@@ -403,6 +403,7 @@ app.get('/createproc', (req, res)=>{
     return res.send({"success":true, "data" : data});
   })
 })
+
 app.listen(PORT, () => {
   console.log(`APP is now running on port ${PORT}!`);
 })
