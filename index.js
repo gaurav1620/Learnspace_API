@@ -298,6 +298,14 @@ app.get('/assignmentbyid/:id', (req,res) => {
     return res.send({"success":true, "data" : data});
   })
 })
+app.get('/assignment', (req,res) => {
+  const query = `SELECT * FROM assignment;`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+}) 
 
 // get all assignments in a classroom 
 app.get('/assignment/:course_id', (req,res) => {
