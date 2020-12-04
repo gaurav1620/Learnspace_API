@@ -397,6 +397,7 @@ app.get('/submissions/:assignment_id/:student_id', (req,res) => {
 }) 
 
 app.post('/gradesubmission/:sub_id', (req,res) => {
+  console.log("marks : ",req.body.marks);
   const query = `UPDATE submissions SET marks_obtained=${req.body.marks} WHERE _id=${req.params.sub_id};`;
   db.query(query, (err, data) => {
     if(err)
