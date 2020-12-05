@@ -228,7 +228,7 @@ app.get('/course/:course_code', (req,res) => {
   })
 }) 
 
-app.get('/course/:teacher_id', (req,res) => {
+app.get('/coursebyteacher/:teacher_id', (req,res) => {
   const query = `SELECT * FROM course WHERE teacher_id=${req.params.teacher_id};`;
   db.query(query, (err, data) => {
     if(err)
