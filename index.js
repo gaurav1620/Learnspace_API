@@ -291,7 +291,7 @@ app.get('/records/:course_id', (req,res) => {
 
 //get all courses of a teacher
 app.post('/courses_made/', (req,res) => {
-  const query = `SELECT * from course WHERE teacher_id=${req.body.teacher_id};`;
+  const query = `SELECT * from course WHERE teacher_id=${req.body.teacher_id});`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
