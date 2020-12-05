@@ -300,8 +300,8 @@ app.get('/coursesenrolled/:student_id', (req,res) => {
 })
 
 app.post('/assignment', (req, res) => {
-  const query = `INSERT INTO assignment(course_id, description, due_date,max_marks, is_study_material)\
-                 VALUES(${req.body.course_id}, '${req.body.description}', '${req.body.due_date}', ${req.body.max_marks}, ${req.body.is_study_material});`;
+  const query = `INSERT INTO assignment(course_id, title, description, due_date, max_marks, is_study_material)\
+                 VALUES(${req.body.course_id}, '${req.body.title}', '${req.body.description}', '${req.body.due_date}', ${req.body.max_marks}, ${req.body.is_study_material});`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
