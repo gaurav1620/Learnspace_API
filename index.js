@@ -127,6 +127,15 @@ app.get('/student', (req, res) => {
   })
 })
 
+app.get('/marks/:assignment_id', (req, res) => {
+  const query = `SELECT submissions.marks_obtained, student.fname, student.lname FROM submissions LEFT JOIN student on submissions.student_id=student._id WHERE submissions.assignment_id=${assignment_id};`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
 app.get('/student/:id', (req, res) => {
   const query = `SELECT * FROM student WHERE _id=${req.params.id};`;
   db.query(query, (err, data) => {
