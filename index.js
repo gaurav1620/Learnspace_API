@@ -296,6 +296,16 @@ app.post('/course_check', (req, res) => {
   })
 })
 
+//remove student from course
+app.post('/remove_from_course', (req, res) => {
+  const query = `delete from records where student_id='${req.body.student_id}' and course_id='${req.body.course_id}';`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
 
 //RECORDS
 
