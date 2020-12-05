@@ -485,8 +485,8 @@ app.get('/describe/:tablename', (req, res)=>{
   })
 })
 
-app.post('get_report', (req, res)=>{
-  const query =`CALL send_report('${req.body.assignment_id}')`;
+app.get('/get_report/:assignment_id', (req, res)=>{
+  const query =`CALL send_report('${req.param.assignment_id}')`;
   console.log(query);
   db.query(query, (err, data) => {
     if(err)
