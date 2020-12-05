@@ -270,9 +270,11 @@ app.get('/course', (req,res) => {
 app.get('/course/:course_code', (req,res) => {
   const query = `SELECT * FROM course WHERE course_code='${req.params.course_code}';`;
   db.query(query, (err, data) => {
-    if(err)
+    if(err){
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    return res.send({"success":true, "data" : data});
+    } else if(data.len == 0){
+      return res.status(404).send({"success":false, "error":err.name, "message": err.message});
+    } else return res.send({"success":true, "data" : data});
   })
 }) 
 
@@ -483,15 +485,8 @@ app.get('/describe/:tablename', (req, res)=>{
   })
 })
 
-app.get('/createproc', (req, res)=>{
-  const query = `DELIMITER //
-                  DROP PROCEDURE IF EXISTS send_report//
-                    CREATE PROCEDURE send_report(IN ass_id integer)
-                      BEGIN
-                        SELECT AVG(marks), MAX(marks), MIN(marks), COUNT(marks) FROM submissions WHERE assignment_id=ass_id;
-                    END//
-                  DELIMITER ;
-                `;
+app.post('get_report', (req, res)=>{
+  const query =`CALL send_report('${req.body.assignment_id}')`;
   console.log(query);
   db.query(query, (err, data) => {
     if(err)
