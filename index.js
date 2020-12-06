@@ -25,6 +25,7 @@ const db = mysql.createPool({
 })
 
 app.use(bodyParser.json());
+app.use(fileUpload());
 
 app.get('/foo', (req, res) => {
   res.send({'foo':'bar'});
