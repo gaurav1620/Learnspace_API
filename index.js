@@ -525,6 +525,15 @@ app.get('/notes', (req, res) => {
   })
 })
 
+app.get('/notes/:id', (req,res) => {
+  const query = `SELECT * FROM notes WHERE user_id=${req.params.id};`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+}) 
+
 app.listen(PORT, () => {
   console.log(`APP is now running on port ${PORT}!`);
 })
