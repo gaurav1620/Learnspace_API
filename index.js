@@ -534,6 +534,15 @@ app.get('/notes/:id', (req,res) => {
   })
 }) 
 
+app.post('/remove_from_notes', (req, res) => {
+  const query = `delete from notes where user_id='${req.body.user_id}';`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
 app.listen(PORT, () => {
   console.log(`APP is now running on port ${PORT}!`);
 })
