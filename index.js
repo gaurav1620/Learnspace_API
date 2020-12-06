@@ -1,9 +1,10 @@
 const express = require('express');
-const fileUpload = require('express-fileupload');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const credentials = require('./credentials');
+const fileUpload = require('express-fileupload');
+const multer  = require('multer')
 
 const PORT = process.env.PORT || 8000;
 
@@ -25,6 +26,7 @@ const db = mysql.createPool({
 })
 
 app.use(bodyParser.json());
+var upload = multer({ dest: 'uploads/' })
 app.use(fileUpload());
 
 app.get('/foo', (req, res) => {
@@ -400,18 +402,21 @@ app.get('/assignment/:course_id', (req,res) => {
   })
 }) 
 
-app.post('/attachments', (req, res) => {
+app.post('/attachments',upload.single('file'), (req, res) => {
+  /*
   if(!req.files){
     res.send({
         status: false,
         message: 'No file uploaded'
     });
   }
-
-  const file = req.files.file;
+   */
+  const file = req.file;
   const query = `INSERT INTO attachments(data, assignment_id, name, description)\
                  VALUES(${file}, ${req.body.assignment_id}, '${req.body.name}', '${req.body.description}');`;
   console.log(query);
+  console.log(typeof(typeof(file)));
+  console.log(req.body);
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -448,8 +453,8 @@ app.get('/attachments/:assignment_id', (req,res) => {
   })
 }) 
 
-app.post('/submissions', (req, res) => {
-  const file = req.files.file;
+app.post('/submissions', upload.single('file') , (req, res) => {
+  const file = req.file;
   const query = `INSERT INTO submissions(data, assignment_id, student_id)\
                  VALUES(${file}, ${req.body.assignment_id}, '${req.body.student_id}');`;
   db.query(query, (err, data) => {
