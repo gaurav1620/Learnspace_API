@@ -535,7 +535,7 @@ app.get('/notes/:id', (req,res) => {
 }) 
 
 app.post('/remove_from_notes', (req, res) => {
-  const query = `delete from notes where user_id='${req.body.user_id}';`;
+  const query = `delete from notes where _id='${req.body._id}';`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
