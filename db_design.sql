@@ -59,6 +59,16 @@ CREATE TABLE attachments (
   description VARCHAR(200),
 )
 
+CREATE TABLE notes (
+  _id INT AUTO_INCREMENT,
+  user_id INT,
+  day VARCHAR(50),
+  date VARCHAR(50),
+  time VARCHAR(50),
+  content VARCHAR(300),
+  PRIMARY KEY (_id, user_id)
+);
+
 **************STORED PROCEDURE******************
 
 
