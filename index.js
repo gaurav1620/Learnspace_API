@@ -1,4 +1,5 @@
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
@@ -399,12 +400,22 @@ app.get('/assignment/:course_id', (req,res) => {
 }) 
 
 app.post('/attachments', (req, res) => {
+  const file = req.files.file;
   const query = `INSERT INTO attachments(data, assignment_id, name, description)\
-                 VALUES(${req.body.data}, ${req.body.assignment_id}, '${req.body.name}', '${req.body.description}');`;
+                 VALUES(${file}, ${req.body.assignment_id}, '${req.body.name}', '${req.body.description}');`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
     return res.send({"success":true, "data" : data});
+  })
+})
+
+app.get('/attachmentsfile/:id', (req, res) => {
+  const query = `SELECT * from attachments WHERE _id=${req.params.id};`
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.sendFile(data[0].data);
   })
 })
 
@@ -429,8 +440,9 @@ app.get('/attachments/:assignment_id', (req,res) => {
 }) 
 
 app.post('/submissions', (req, res) => {
+  const file = req.files.file;
   const query = `INSERT INTO submissions(data, assignment_id, student_id)\
-                 VALUES(${req.body.data}, ${req.body.assignment_id}, '${req.body.student_id}');`;
+                 VALUES(${file}, ${req.body.assignment_id}, '${req.body.student_id}');`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -447,7 +459,6 @@ app.get('/updatesubmissionstable', (req,res) => {
   })
 })
 
-
 app.get('/submissions', (req, res) => {
   const query = `SELECT * FROM submissions;`;
   db.query(query, (err, data) => {
@@ -456,6 +467,16 @@ app.get('/submissions', (req, res) => {
     return res.send({"success":true, "data" : data});
   })
 })
+
+app.get('/submissionsfile/:assignment_id/:student_id', (req, res) => {
+  const query = `SELECT * from submissions WHERE assignment_id='${req.params.assignment_id}' AND student_id=${req.params.student_id};`
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.sendFile(data[0].data);
+  })
+})
+
 
 // returns all submissions for a particular assignment
 app.get('/submissions/:assignment_id', (req,res) => {
