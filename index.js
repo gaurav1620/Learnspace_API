@@ -401,9 +401,10 @@ app.get('/assignment/:course_id', (req,res) => {
 }) 
 
 app.post('/attachments', (req, res) => {
-  const file = req.files.file;
+  const file = req.body.file;
   const query = `INSERT INTO attachments(data, assignment_id, name, description)\
                  VALUES(${file}, ${req.body.assignment_id}, '${req.body.name}', '${req.body.description}');`;
+  console.log(query);
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
