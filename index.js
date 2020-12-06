@@ -401,7 +401,14 @@ app.get('/assignment/:course_id', (req,res) => {
 }) 
 
 app.post('/attachments', (req, res) => {
-  const file = req.body.file;
+  if(!req.files){
+    res.send({
+        status: false,
+        message: 'No file uploaded'
+    });
+  }
+
+  const file = req.files.file;
   const query = `INSERT INTO attachments(data, assignment_id, name, description)\
                  VALUES(${file}, ${req.body.assignment_id}, '${req.body.name}', '${req.body.description}');`;
   console.log(query);
