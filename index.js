@@ -377,6 +377,14 @@ app.get('/records/:course_id', (req,res) => {
   })
 })
 
+app.get('/getstudentcount/:course_id', (req,res) => {
+  const query = `SELECT COUNT(*) FROM records WHERE course_id=${req.params.course_id};`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
 
 app.get('/coursesenrolled/:student_id', (req,res) => {
   const query = `SELECT * from course WHERE _id IN(SELECT course_id FROM records WHERE student_id=${req.params.student_id});`;
@@ -448,6 +456,7 @@ app.post('/attachments',upload.single('train'), (req, res) => {
   const file = req.files.train;
   console.log(filename);
   console.log(file.encoding);
+  console.log(JSON.stringify(req.body));
   file.mv('attachments/'+filename, (err) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -455,7 +464,7 @@ app.post('/attachments',upload.single('train'), (req, res) => {
     const query = `INSERT INTO attachments(filename, assignment_id, name, description)\
                    VALUES('${filename}', ${req.body.assignment_id}, '${req.body.name}', '${req.body.description}');`;
     //console.log("Quer");
-    //console.log(query);
+    console.log(query);
     db.query(query, (err, data) => {
       if(err)
         return res.status(400).send({"success":false, "error":err.name, "message": err.message});
