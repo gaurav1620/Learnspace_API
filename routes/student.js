@@ -1,5 +1,3 @@
-require('../database');
-
 module.exports = function(app, db){
     app.get('/ping_student', (req, res) => {
         res.send('works')
