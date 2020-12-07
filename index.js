@@ -162,7 +162,7 @@ app.post('/student_login', (req, res) => {
 
 app.post('/updatestudentname', (req, res) => {
   console.log(req.body);
-  const query = `UPDATE student SET fname=${req.body.fname}, lname=${req.body.lname} WHERE email=${req.body.email};`
+  const query = `UPDATE student SET fname='${req.body.fname}', lname='${req.body.lname}' WHERE email='${req.body.email}';`
   console.log(query);
   db.query(query, (err, data) => {
     if(err){
