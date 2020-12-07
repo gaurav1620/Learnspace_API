@@ -417,20 +417,21 @@ app.get('/assignment/:course_id', (req,res) => {
   })
 }) 
 
-app.post('/attachments',upload.single('file'), (req, res) => {
-  /*
+app.post('/attachments',upload.single('train'), (req, res) => {
   if(!req.files){
     res.send({
         status: false,
         message: 'No file uploaded'
     });
   }
-   */
-  const file = req.file;
+  const file = req.files.train;
+  console.log(file)
+  console.log(req.files)
   const query = `INSERT INTO attachments(data, assignment_id, name, description)\
-                 VALUES(${file}, ${req.body.assignment_id}, '${req.body.name}', '${req.body.description}');`;
+                 VALUES(${file.data}, 1, 'file1', 'file1');`;
   console.log(query);
-  console.log(typeof(typeof(file)));
+  console.log(typeof(file));
+  console.log(typeof(file.data));
   console.log(req.body);
   db.query(query, (err, data) => {
     if(err)
