@@ -194,7 +194,7 @@ app.post('/teacher', (req, res) => {
 
 app.post('/updateteachername', (req, res) => {
   console.log(req.body);
-  const query = `UPDATE teacher SET fname=${req.body.fname}, lname=${req.body.lname} WHERE email=${req.body.email};`
+  const query = `UPDATE teacher SET fname='${req.body.fname}', lname='${req.body.lname}' WHERE email='${req.body.email}';`
   console.log(query);
   db.query(query, (err, data) => {
     if(err){
