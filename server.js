@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 
 require('./routes')(app);
-const db = require('./db');
+const db = require('./database');
 
 app.use(bodyParser.json());
 var upload = multer({ dest: 'uploads/' })
@@ -95,20 +95,7 @@ app.get('/droptables', (req, res) => {
 
 
 //STUDENT
-app.post('/student', (req, res) => {
-  console.log(req.body);
-  const query = `INSERT INTO student(fname, lname, email, password, year, department) VALUES('${req.body.fname}', '${req.body.lname}', '${req.body.email}', '${req.body.password}', '${req.body.year}', '${req.body.department}');`;
-  console.log(query);
-  db.query(query, (err, data) => {
-    if(err){
-      if(err.message.includes('ER_DUP_ENTRY')){
-        return res.send({"success":false, "reason": "Email exists"});
-      }
-      else return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    }
-    return res.send({"success":true, "data" : data});
-  })
-})
+
 
 app.get('/marks/:assignment_id', (req, res) => {
   const query = `SELECT submissions.marks_obtained, student.fname, student.lname FROM submissions LEFT JOIN student on submissions.student_id=student._id WHERE submissions.assignment_id=${assignment_id};`;
@@ -119,193 +106,42 @@ app.get('/marks/:assignment_id', (req, res) => {
   })
 })
 
-app.get('/student/:id', (req, res) => {
-  const query = `SELECT * FROM student WHERE _id=${req.params.id};`;
-  db.query(query, (err, data) => {
-    if(err)
-      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    return res.send({"success":true, "data" : data});
-  })
-})
 
-app.post('/student_login', (req, res) => {
-  const query = `SELECT * FROM student WHERE email = '${req.body.email}' AND password = '${req.body.password}'`;
-  db.query(query, (err, data) => {
-    if(err)
-      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    if(data == '')
-      return res.send({"student": "not found"});
-    return res.send({"student": "found", "data": data});
-  })
-})
 
-app.post('/updatestudentname', (req, res) => {
-  console.log(req.body);
-  const query = `UPDATE student SET fname='${req.body.fname}', lname='${req.body.lname}' WHERE email='${req.body.email}';`
-  console.log(query);
-  db.query(query, (err, data) => {
-    if(err){
-      if(err.message.includes('ER_DUP_ENTRY')){
-        return res.send({"success":false, "reason": "Email exists"});
-      }
-      else return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    }
-    return res.send({"success":true, "data" : data});
-  })
-})
+
+
+
 
 
 //TEACHER
-app.post('/teacher', (req, res) => {
-  console.log(req.body);
-  const query = `INSERT INTO teacher(fname, lname, email, password) VALUES('${req.body.fname}', '${req.body.lname}', '${req.body.email}', '${req.body.password}');`;
-  console.log(query);
-  db.query(query, (err, data) => {
-    if(err){
-      if(err.message.includes('ER_DUP_ENTRY')){
-        return res.send({"success":false, "reason": "Email exists"});
-      }
-      else return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    }
-    return res.send({"success":true, "data" : data});
-  })
-})
-
-app.post('/updateteachername', (req, res) => {
-  console.log(req.body);
-  const query = `UPDATE teacher SET fname='${req.body.fname}', lname='${req.body.lname}' WHERE email='${req.body.email}';`
-  console.log(query);
-  db.query(query, (err, data) => {
-    if(err){
-      if(err.message.includes('ER_DUP_ENTRY')){
-        return res.send({"success":false, "reason": "Email exists"});
-      }
-      else return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    }
-    return res.send({"success":true, "data" : data});
-  })
-})
 
 
-app.get('/teacher', (req, res) => {
-  const query = 'SELECT * FROM teacher;';
-  db.query(query, (err, data) => {
-    if(err)
-      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    return res.send({"success":true, "data" : data});
-  })
-})
 
-app.get('/teacher/:id', (req, res) => {
-  const query = `SELECT * FROM teacher WHERE _id=${req.params.id};`;
-  db.query(query, (err, data) => {
-    if(err)
-      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    return res.send({"success":true, "data" : data});
-  })
-})
-app.post('/teacher_login', (req, res) => {
-  const query = `SELECT * FROM teacher WHERE email = '${req.body.email}' AND password = '${req.body.password}';`;
-  db.query(query, (err, data) => {
-    if(err)
-      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    if(data == '')
-      return res.send({"teacher": "not found"});
-    return res.send({"teacher": "found", "data": data});
-  })
-})
+
+
+
+
+
 
 
 //COURSE
 
 //create new course
-app.post('/course', (req, res) => {
-  const query = `INSERT INTO course(teacher_id, name, description, year, department, course_code)\
-                 VALUES(${req.body.teacher_id}, '${req.body.name}', '${req.body.description}', '${req.body.year}', '${req.body.department}', '${req.body.course_code}');`;
-  db.query(query, (err, data) => {
-    if(err){
-      if(err.message.includes('ER_DUP_ENTRY')){
-        return res.send({"success":false, "reason": "course code exists"});
-      }
-      else return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    }
-    return res.send({"success":true, "data" : data});
-  })
-})
-
-app.delete('/course', (req, res) => {
-  const course_code = req.body.course_code;
-  const course_id = req.body.course_id;
-
-  const query = `
-  DELETE FROM submissions WHERE assignment_id IN (SELECT _id FROM assignment WHERE course_id=${course_id});
-  DELETE FROM attachments WHERE assignment_id IN (SELECT _id FROM assignment WHERE course_id=${course_id});
-  DELETE FROM assignment WHERE course_id=${course_id};
-  DELETE FROM records WHERE course_id=${course_id};
-  DELETE FROM course WHERE course_code=${course_code};
-  `;
-  db.query(query, (err, data) => {
-    if(err){
-      if(err.message.includes('ER_DUP_ENTRY')){
-        return res.send({"success":false, "reason": "course code exists"});
-      }
-      else return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    }
-    return res.send({"success":true, "data" : data});
-  })
-})
 
 
-app.get('/course', (req,res) => {
-  const query = `SELECT * FROM course;`;
-  db.query(query, (err, data) => {
-    if(err)
-      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    return res.send({"success":true, "data" : data});
-  })
-}) 
 
-app.get('/course/:course_code', (req,res) => {
-  const query = `SELECT * FROM course WHERE course_code='${req.params.course_code}';`;
-  db.query(query, (err, data) => {
-    if(err){
-      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    } else if(data.len == 0){
-      return res.status(404).send({"success":false, "error":err.name, "message": err.message});
-    } else return res.send({"success":true, "data" : data});
-  })
-}) 
 
-app.get('/courseinfo/:course_id', (req,res) => {
-  const query = `SELECT * FROM course WHERE _id='${req.params.course_id}';`;
-  db.query(query, (err, data) => {
-    if(err){
-      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    } else if(data.len == 0){
-      return res.status(404).send({"success":false, "error":err.name, "message": err.message});
-    } else return res.send({"success":true, "data" : data});
-  })
-}) 
 
-app.get('/coursebyteacher/:teacher_id', (req,res) => {
-  const query = `SELECT * FROM course WHERE teacher_id=${req.params.teacher_id};`;
-  db.query(query, (err, data) => {
-    if(err)
-      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    return res.send({"success":true, "data" : data});
-  })
-}) 
+
+ 
+
+ 
+
+ 
 
 
 //course existence check
-app.post('/course_check', (req, res) => {
-  const query = `SELECT * FROM course WHERE course_code='${req.body.course_code}';`;
-  db.query(query, (err, data) => {
-    if(err)
-      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    return res.send({"success":true, "data" : data});
-  })
-})
+
 
 //remove student from course
 app.post('/remove_from_course', (req, res) => {

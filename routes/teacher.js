@@ -1,4 +1,3 @@
-
 module.exports = function(app, db){
     app.get('/ping_teacher', (req, res) => {
         res.send('works')
