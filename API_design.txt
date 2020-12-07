@@ -44,7 +44,7 @@
   *         description   : string (required);
   *         due_date      : string (required);
   *         max_marks     : int (required);
-  *         is_study_material     : Boolean (required);
+  *         is_assignment     : Boolean (required);
   *
   
 

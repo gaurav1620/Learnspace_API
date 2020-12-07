@@ -40,7 +40,7 @@ CREATE TABLE assignment (
   description VARCHAR(200), 
   due_date DATE,
   max_marks INT(3),
-  is_study_material BOOLEAN NOT NULL
+  is_assignment BOOLEAN NOT NULL
 );
 
 CREATE TABLE submissions (
