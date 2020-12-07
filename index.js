@@ -1,10 +1,12 @@
 const express = require('express');
+const fs = require('fs');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const credentials = require('./credentials');
 const fileUpload = require('express-fileupload');
 const multer  = require('multer')
+const serveIndex = require('serve-index');
 
 const PORT = process.env.PORT || 8000;
 
@@ -26,9 +28,14 @@ const db = mysql.createPool({
 })
 
 app.use(bodyParser.json());
-var upload = multer({ dest: 'uploads/' })
-app.use(fileUpload());
+app.use(express.static(__dirname + "/"))
+app.use('/uploads', serveIndex(__dirname + '/uploads'));
 
+var upload = multer({ dest: 'uploads/' })
+
+app.use(fileUpload({
+    createParentPath: true
+}));
 app.get('/foo', (req, res) => {
   res.send({'foo':'bar'});
 })
@@ -417,6 +424,13 @@ app.get('/assignment/:course_id', (req,res) => {
   })
 }) 
 
+
+app.get('/getattachments/:filename', (req,res) => {
+  //res.sendFile(path.join(__dirname, 'uploads', 'test.txt'))
+  res.download(__dirname + '/uploads/'+req.params.filename);
+})
+
+
 app.post('/attachments',upload.single('train'), (req, res) => {
   if(!req.files){
     res.send({
@@ -424,11 +438,40 @@ app.post('/attachments',upload.single('train'), (req, res) => {
         message: 'No file uploaded'
     });
   }
+  const filename = req.files.train.name;
   const file = req.files.train;
-  console.log(file)
-  console.log(req.files)
+  console.log(filename);
+  console.log(file.encoding);
+  file.mv('uploads/'+filename, (err) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+    /*
+    fs.readFile(__dirname + '/uploads/' + filename, (err, data) => {
+      if(err)
+        return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+      
+      //console.log(data);
+      const query = `INSERT INTO attachments(data, assignment_id, name, description)\
+                     VALUES(${data}, 1, 'file1', 'file1');`;
+      //console.log("Quer");
+      //console.log(query);
+      db.query(query, (err, data) => {
+        if(err)
+          return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+        return res.send({"success":true, "data" : data});
+      })
+    })
+     */
+  })
+  
+
+  //console.log(file)
+  //console.log(req.files)
+  /*
+  const f1 = new Blob(file.data);
   const query = `INSERT INTO attachments(data, assignment_id, name, description)\
-                 VALUES(${file.data}, 1, 'file1', 'file1');`;
+                 VALUES(${f1}, 1, 'file1', 'file1');`;
   console.log(query);
   console.log(typeof(file));
   console.log(typeof(file.data));
@@ -438,6 +481,7 @@ app.post('/attachments',upload.single('train'), (req, res) => {
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
     return res.send({"success":true, "data" : data});
   })
+   */
 })
 
 app.get('/attachmentsfile/:id', (req, res) => {
