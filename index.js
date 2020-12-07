@@ -425,12 +425,18 @@ app.get('/assignment/:course_id', (req,res) => {
 }) 
 
 
-app.get('/getattachments/:filename', (req,res) => {
+app.get('/getattachedfile/:attachment_id', (req,res) => {
   //res.sendFile(path.join(__dirname, 'uploads', 'test.txt'))
-  res.download(__dirname + '/uploads/'+req.params.filename);
+  const query = `SELECT * FROM attachments WHERE _id=${req.params.attachment_id};`;
+  
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    res.download(__dirname + '/attachemnts/'+data[0].filename);
+    //return res.send({"success":true, "data" : data});
+  })
+  //res.download(__dirname + '/uploads/'+req.params.filename);
 })
-
-
 app.post('/attachments',upload.single('train'), (req, res) => {
   if(!req.files){
     res.send({
@@ -438,14 +444,23 @@ app.post('/attachments',upload.single('train'), (req, res) => {
         message: 'No file uploaded'
     });
   }
-  const filename = req.files.train.name;
+  const filename = Date.now().toString() + req.files.train.name;
   const file = req.files.train;
   console.log(filename);
   console.log(file.encoding);
-  file.mv('uploads/'+filename, (err) => {
+  file.mv('attachments/'+filename, (err) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    return res.send({"success":true, "data" : data});
+    
+    const query = `INSERT INTO attachments(filename, assignment_id, name, description)\
+                   VALUES('${filename}', ${req.body.assignment_id}, '${req.body.name}', '${req.body.description}');`;
+    //console.log("Quer");
+    //console.log(query);
+    db.query(query, (err, data) => {
+      if(err)
+        return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+      return res.send({"success":true, "data" : data});
+    })
     /*
     fs.readFile(__dirname + '/uploads/' + filename, (err, data) => {
       if(err)
