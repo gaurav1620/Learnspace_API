@@ -53,10 +53,11 @@ CREATE TABLE submissions (
 
 CREATE TABLE attachments (
   _id INT PRIMARY KEY AUTO_INCREMENT,
-  data BLOB NOT NULL,
   assignment_id INT NOT NULL,
   name VARCHAR(100) NOT NULL,
   description VARCHAR(200),
+  filename VARCHAR(50) NOT NULL,
+  data BLOB
 )
 
 CREATE TABLE notes (
