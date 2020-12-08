@@ -514,8 +514,8 @@ app.post('/attachments/:assignment_id',upload.single('train'), (req, res) => {
    */
 })
 
-app.get('/attachmentsfile/:id', (req, res) => {
-  const query = `SELECT * from attachments WHERE _id=${req.params.id};`
+app.get('/attachmentsfile/:assignment_id', (req, res) => {
+  const query = `SELECT * from attachments WHERE attachment_id=${req.params.attachment_id};`
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
