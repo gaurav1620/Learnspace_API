@@ -519,7 +519,8 @@ app.get('/attachmentsfile/:assignment_id', (req, res) => {
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    return res.sendFile(data[0].data);
+    //return res.sendFile(data[0].data);
+    return res.download(__dirname + '/attachments/'+data[0].filename);
   })
 })
 
