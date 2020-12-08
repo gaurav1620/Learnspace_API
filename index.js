@@ -468,7 +468,7 @@ app.post('/attachments/:assignment_id',upload.single('train'), (req, res) => {
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
     
     const query = `INSERT INTO attachments(filename, assignment_id)\
-                   VALUES('${filename}', ${req.body.assignment_id});`;
+                   VALUES('${filename}', ${req.params.assignment_id});`;
     //console.log("Quer");
     console.log(query);
     db.query(query, (err, data) => {
