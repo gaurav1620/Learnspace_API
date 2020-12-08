@@ -520,7 +520,9 @@ app.get('/attachmentsfile/:assignment_id', (req, res) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
     //return res.sendFile(data[0].data);
-    return res.download(__dirname + '/attachments/'+data[0].filename);
+    const path = __dirname + '/attachments/'+data[0].filename;
+    console.log(path);
+    res.download(path);
   })
 })
 
