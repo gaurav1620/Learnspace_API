@@ -450,7 +450,8 @@ app.get('/getattachedfile/:attachment_id', (req,res) => {
   })
   //res.download(__dirname + '/uploads/'+req.params.filename);
 })
-app.post('/attachments',upload.single('train'), (req, res) => {
+
+app.post('/attachments/:assignment_id',upload.single('train'), (req, res) => {
   if(!req.files){
     res.send({
         status: false,
@@ -466,8 +467,8 @@ app.post('/attachments',upload.single('train'), (req, res) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
     
-    const query = `INSERT INTO attachments(filename, assignment_id, name, description)\
-                   VALUES('${filename}', ${req.body.assignment_id}, '${req.body.name}', '${req.body.description}');`;
+    const query = `INSERT INTO attachments(filename, assignment_id)\
+                   VALUES('${filename}', ${req.body.assignment_id});`;
     //console.log("Quer");
     console.log(query);
     db.query(query, (err, data) => {
