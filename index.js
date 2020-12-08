@@ -542,6 +542,48 @@ app.get('/attachments/:assignment_id', (req,res) => {
   })
 }) 
 
+
+app.post('/submissions/:assignment_id/:student_id',upload.single('train'), (req, res) => {
+  if(!req.files){
+    res.send({
+        status: false,
+        message: 'No file uploaded'
+    });
+  }
+  const filename = Date.now().toString() + req.files.train.name;
+  const file = req.files.train;
+  console.log(filename);
+  console.log(file.encoding);
+  console.log(JSON.stringify(req.body));
+  console.log(req.student_id);
+  file.mv('submissions/'+filename, (err) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    
+    const query = `INSERT INTO submissions(filename, assignment_id, student_id)\
+                   VALUES('${filename}', ${req.params.assignment_id}, ${req.params.student_id});`;
+    //console.log("Quer");
+    console.log(query);
+    db.query(query, (err, data) => {
+      if(err)
+        return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+      return res.send({"success":true, "data" : data});
+    })
+  })
+})
+
+app.get('/getsubmittedfile/:assignment_id/:student_id', (req,res) => {
+  //res.sendFile(path.join(__dirname, 'uploads', 'test.txt'))
+  const query = `SELECT * FROM submissions WHERE assignment_id=${req.params.assignment_id} AND student_id=${req.params.student_id};`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    res.download(__dirname + '/submissions/'+data[0].filename);
+    //return res.send({"success":true, "data" : data});
+  })
+  //res.download(__dirname + '/uploads/'+req.params.filename);
+})
+/*
 app.post('/submissions', upload.single('file') , (req, res) => {
   const file = req.file;
   const query = `INSERT INTO submissions(data, assignment_id, student_id)\
@@ -552,7 +594,7 @@ app.post('/submissions', upload.single('file') , (req, res) => {
     return res.send({"success":true, "data" : data});
   })
 })
-
+ */
 app.get('/updatesubmissionstable', (req,res) => {
   const query = 'ALTER TABLE submissions MODIFY data BLOB;'
   db.query(query, (err, data) => {
