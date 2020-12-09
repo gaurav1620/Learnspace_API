@@ -447,7 +447,7 @@ app.get('/hasattachedfile/:assignment_id', (req,res) => {
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    const pathh = __dirname + '/submissions/'+data[0].filename;
+    const pathh = __dirname + '/attachments/'+data[0].filename;
     if(!data || !data[0] || !data[0].filename || !fs.existsSync(pathh))
       return res.status(200).send({"success":true, "file_exists": false});
     return res.status(200).send({"success":true, "file_exists": true});
