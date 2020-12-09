@@ -463,13 +463,13 @@ app.get('/getattachedfile/:attachment_id', (req,res) => {
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    res.download(__dirname + '/attachemnts/'+data[0].filename);
+    res.download(__dirname + '/attachments/'+data[0].filename);
     //return res.send({"success":true, "data" : data});
   })
   //res.download(__dirname + '/uploads/'+req.params.filename);
 })
 
-app.get('/attachemnts', (req,res) => {
+app.get('/attachments', (req,res) => {
   //res.sendFile(path.join(__dirname, 'uploads', 'test.txt'))
   const query = `SELECT * FROM attachments;`;
   db.query(query, (err, data) => {
@@ -566,7 +566,7 @@ app.get('/attachmentsbyid/:id', (req,res) => {
   })
 })
 
-// get all the attachemnts for a particular assignment
+// get all the attachments for a particular assignment
 app.get('/attachments/:assignment_id', (req,res) => {
   const query = `SELECT * FROM attachments WHERE assignment_id=${req.params.assignment_id};`;
   db.query(query, (err, data) => {
