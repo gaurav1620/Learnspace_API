@@ -266,7 +266,7 @@ app.post('/course', (req, res) => {
   })
 })
 
-app.delete('/course', (req, res) => {
+app.post('/deletecourse', (req, res) => {
   const course_code = req.body.course_code;
   const course_id = req.body.course_id;
 
