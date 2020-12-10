@@ -275,7 +275,7 @@ app.delete('/course', (req, res) => {
   DELETE FROM attachments WHERE assignment_id IN (SELECT _id FROM assignment WHERE course_id=${course_id});
   DELETE FROM assignment WHERE course_id=${course_id};
   DELETE FROM records WHERE course_id=${course_id};
-  DELETE FROM course WHERE course_code=${course_code};
+  DELETE FROM course WHERE course_code='${course_code}';
   `;
   db.query(query, (err, data) => {
     if(err){
