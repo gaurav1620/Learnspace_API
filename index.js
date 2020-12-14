@@ -396,6 +396,10 @@ app.get('/search/:course_id/:fname/:lname', (req,res) => {
   })
 })
 
+app.get('/search', (req,res) => {
+  res.send({'search':'bar'})
+})
+
 app.get('/getstudentcount/:course_id', (req,res) => {
   const query = `SELECT COUNT(student_id) AS count FROM records WHERE course_id=${req.params.course_id};`;
   db.query(query, (err, data) => {
