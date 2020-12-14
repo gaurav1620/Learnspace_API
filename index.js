@@ -387,6 +387,10 @@ app.get('/records/:course_id', (req,res) => {
   })
 })
 
+app.get('/search', (req,res) => {
+  res.send({'search':'bar'})
+})
+
 app.get('/search/:course_id/:fname/:lname', (req,res) => {
   const query = `SELECT * FROM student WHERE _id IN(SELECT student_id FROM records WHERE course_id=${req.params.course_id}) AND (fname='${req.params.fname}' OR lname='${req.params.lname}');`;
   db.query(query, (err, data) => {
@@ -396,9 +400,6 @@ app.get('/search/:course_id/:fname/:lname', (req,res) => {
   })
 })
 
-app.get('/search', (req,res) => {
-  res.send({'search':'bar'})
-})
 
 app.get('/getstudentcount/:course_id', (req,res) => {
   const query = `SELECT COUNT(student_id) AS count FROM records WHERE course_id=${req.params.course_id};`;
