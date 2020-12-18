@@ -835,28 +835,33 @@ app.post('/quiz', (req,res) => {
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-    else {
-      
-      const questions = req.body.questions
-      console.log(questions)
-      let isError = false
-      questions.map(q => {
-      
-        const newQuery = `INSERT INTO question (quiz_id,question_title, question_type,option_1, option_2, option_3, option_4, correct_option, textual_ques_marks, min_char,QID)\
-                          VALUES(${data.insertId}, '${q.questionTitle}', '${q.questionType}', '${q.option1}',  '${q.option2}',  '${q.option3}',  '${q.option4}',  ${q.correctOption},  ${q.textualQuesMarks},  ${q.minChar},  ${q.QID},);`;
-        
-        db.query(newQuery, (err, dataNew) => {
-          if(err)
-            isError = true
-            
-        })
-      
-      })
-      if(isError) return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-      return res.send({"success":true, "data" : data});
-    }
+    return res.send({"success":true, "data" : data});
   })
 })
+
+app.post('/question', (req,res) => {
+  console.log(req.body)
+  let q = req.body
+  let query = ''
+  if(q.questionType === 'mcq') {
+    query = `INSERT INTO question (quiz_id,question_title, question_type,option_1, option_2, option_3, option_4, correct_option, textual_ques_marks, min_char,QID)\
+                 VALUES(${q.quizID}, '${q.questionTitle}', '${q.questionType}', '${q.option1}',  '${q.option2}',  '${q.option3}',  '${q.option4}',  ${q.correctOption},  null,  null,  ${q.QID});`;
+  } else {
+    query = `INSERT INTO question (quiz_id,question_title, question_type,option_1, option_2, option_3, option_4, correct_option, textual_ques_marks, min_char,QID)\
+    VALUES(${q.quizID}, '${q.questionTitle}', '${q.questionType}', null,  null,  null,  null,  null,  ${q.textualQuesMarks},  ${q.minChar},  ${q.QID});`;
+  }
+  
+  
+  console.log('query is ', query)
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+//const newQuery = `INSERT INTO question (quiz_id,question_title, question_type,option_1, option_2, option_3, option_4, correct_option, textual_ques_marks, min_char,QID)\
+  //                        VALUES(${data.insertId}, '${q.questionTitle}', '${q.questionType}', '${q.option1}',  '${q.option2}',  '${q.option3}',  '${q.option4}',  ${q.correctOption},  ${q.textualQuesMarks},  ${q.minChar},  ${q.QID},);`;
 
 app.listen(PORT, () => {
   console.log(`APP is now running on port ${PORT}!`);
