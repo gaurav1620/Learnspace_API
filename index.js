@@ -806,6 +806,56 @@ app.post('/changecoursename/:id', (req, res) => {
   })
 })
 
+
+
+// QUIZ 
+
+app.get('/quiz', (req, res) => {
+  const query = 'SELECT * FROM quiz;';
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+app.get('/questions', (req, res) => {
+  const query = 'SELECT * FROM questions;';
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+
+app.post('/quiz', (req,res) => {
+  const query = `INSERT INTO quiz (number_of_questions, total_marks, is_active, teacher_id, course_id, quiz_title)\
+                  VALUES (${req.body.numberOfQuestions}, ${req.body.totalMarks}, ${req.body.isActive}, ${req.body.teacher_id}, ${req.body.course_id}, '${req.body.quizTitle}');`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    else {
+      
+      const questions = req.body.questions
+      console.log(questions)
+      questions.map(q => {
+      
+        const newQuery = `INSERT INTO question (quiz_id,question_title, question_type,option_1, option_2, option_3, option_4, correct_option, textual_ques_marks, min_char,QID)\
+                          VALUES(${data.data.insertId}, '${q.questionTitle}', '${q.questionType}', ${q.option1},  ${q.option2},  ${q.option3},  ${q.option4},  ${q.correctOption},  ${q.textualQuesMarks},  ${q.minChar},  ${q.QID},);`;
+        
+        db.query(newQuery, (err, dataNew) => {
+          if(err)
+            return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+          return res.send({"success":true, "data" : data});
+        })
+      
+      })
+      
+    }
+  }
+})
+
 app.listen(PORT, () => {
   console.log(`APP is now running on port ${PORT}!`);
 })
