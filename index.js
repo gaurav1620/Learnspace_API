@@ -848,7 +848,7 @@ app.post('/quiz', (req,res) => {
         db.query(newQuery, (err, dataNew) => {
           if(err)
             isError = true
-            break
+            
         })
       
       })
