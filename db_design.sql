@@ -69,6 +69,42 @@ CREATE TABLE notes (
   PRIMARY KEY (_id, user_id)
 );
 
+CREATE TABLE quiz ( 
+  _id INT PRIMARY KEY AUTO_INCREMENT,
+  number_of_questions INT,
+  total_marks INT,
+  is_active BOOL,
+  teacher_id INT NOT NULL,
+  course_id INT NOT NULL,
+  quiz_title VARCHAR(200)
+);
+
+
+CREATE TABLE question ( 
+  question_id INT AUTO_INCREMENT,
+  quiz_id INT NOT NULL,
+  question_title VARCHAR(200),
+  question_type VARCHAR(10),
+  option_1 INT,
+  option_2 INT,
+  option_3 INT,
+  option_4 INT,
+  correct_option INT,
+  textual_ques_marks INT,
+  min_char INT,
+  QID INT NOT NULL,
+  PRIMARY KEY (question_id, quiz_id )
+);
+
+CREATE TABLE quiz_submission (
+  quiz_id INT NOT NULL,
+  student_id INT NOT NULL,
+  total_marks INT,
+  marks_obtained INT,
+  PRIMARY KEY (quiz_id, student_id)
+)
+
+
 **************STORED PROCEDURE******************
 
 
