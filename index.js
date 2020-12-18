@@ -842,7 +842,7 @@ app.post('/quiz', (req,res) => {
       questions.map(q => {
       
         const newQuery = `INSERT INTO question (quiz_id,question_title, question_type,option_1, option_2, option_3, option_4, correct_option, textual_ques_marks, min_char,QID)\
-                          VALUES(${data.insertId}, '${q.questionTitle}', '${q.questionType}', ${q.option1},  ${q.option2},  ${q.option3},  ${q.option4},  ${q.correctOption},  ${q.textualQuesMarks},  ${q.minChar},  ${q.QID},);`;
+                          VALUES(${data.insertId}, '${q.questionTitle}', '${q.questionType}', '${q.option1}',  '${q.option2}',  '${q.option3}',  '${q.option4}',  ${q.correctOption},  ${q.textualQuesMarks},  ${q.minChar},  ${q.QID},);`;
         
         db.query(newQuery, (err, dataNew) => {
           if(err)
