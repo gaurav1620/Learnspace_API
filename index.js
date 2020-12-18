@@ -853,7 +853,7 @@ app.post('/quiz', (req,res) => {
       })
       
     }
-  }
+  })
 })
 
 app.listen(PORT, () => {
