@@ -843,12 +843,13 @@ app.post('/question', (req,res) => {
   console.log(req.body)
   let q = req.body
   let query = ''
+  let keywords = req.body.keywords ? req.body.keywords.join('.') : null
   if(q.questionType === 'mcq') {
-    query = `INSERT INTO question (quiz_id,question_title, question_type,option_1, option_2, option_3, option_4, correct_option, textual_ques_marks, min_char,QID)\
-                 VALUES(${q.quizID}, '${q.questionTitle}', '${q.questionType}', '${q.option1}',  '${q.option2}',  '${q.option3}',  '${q.option4}',  ${q.correctOption},  null,  null,  ${q.QID});`;
+    query = `INSERT INTO question (quiz_id,question_title, question_type,option_1, option_2, option_3, option_4, correct_option, textual_ques_marks, min_char,QID, keywords)\
+                 VALUES(${q.quizID}, '${q.questionTitle}', '${q.questionType}', '${q.option1}',  '${q.option2}',  '${q.option3}',  '${q.option4}',  ${q.correctOption},  null,  null,  ${q.QID}, null);`;
   } else {
-    query = `INSERT INTO question (quiz_id,question_title, question_type,option_1, option_2, option_3, option_4, correct_option, textual_ques_marks, min_char,QID)\
-    VALUES(${q.quizID}, '${q.questionTitle}', '${q.questionType}', null,  null,  null,  null,  null,  ${q.textualQuesMarks},  ${q.minChar},  ${q.QID});`;
+    query = `INSERT INTO question (quiz_id,question_title, question_type,option_1, option_2, option_3, option_4, correct_option, textual_ques_marks, min_char,QID, keywords)\
+    VALUES(${q.quizID}, '${q.questionTitle}', '${q.questionType}', null,  null,  null,  null,  null,  ${q.textualQuesMarks},  ${q.minChar},  ${q.QID}, '${keywords}');`;
   }
   
   
@@ -872,6 +873,16 @@ app.get('/quiz/:id', (req, res) => {
 app.get('/quizfromcourse/:id', (req, res) => {
   console.log('id is ', req.params.id)
   let query = `SELECT * FROM quiz WHERE course_id = ${req.params.id};`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+app.get('/questions/:quiz_id', (req, res) => {
+  
+  let query = `SELECT * FROM question WHERE quiz_id = ${req.params.quiz_id};`;
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
