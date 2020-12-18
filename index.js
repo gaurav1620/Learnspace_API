@@ -839,6 +839,7 @@ app.post('/quiz', (req,res) => {
       
       const questions = req.body.questions
       console.log(questions)
+      let isError = false
       questions.map(q => {
       
         const newQuery = `INSERT INTO question (quiz_id,question_title, question_type,option_1, option_2, option_3, option_4, correct_option, textual_ques_marks, min_char,QID)\
@@ -846,12 +847,13 @@ app.post('/quiz', (req,res) => {
         
         db.query(newQuery, (err, dataNew) => {
           if(err)
-            return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-          return res.send({"success":true, "data" : data});
+            isError = true
+            break
         })
       
       })
-      
+      if(isError) return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+      return res.send({"success":true, "data" : data});
     }
   })
 })
