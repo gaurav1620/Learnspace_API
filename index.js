@@ -776,6 +776,35 @@ app.get('/giveLastAss', (req,res) => {
   })
 })
 
+app.post('/deleteassignment/:id', (req, res) => {
+  const query = `DELETE FROM assignment WHERE _id=${req.params.id}`
+  db.query(query, (err, data) => {
+    if(err){    
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    }
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+app.post('/changeassignmentname/:id', (req, res) => {
+  const query = `UPDATE assignment SET title=${req.body.title} WHERE _id=${req.params.id}`
+  db.query(query, (err, data) => {
+    if(err){    
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    }
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+app.post('/changecoursename/:id', (req, res) => {
+  const query = `UPDATE course SET name=${req.body.name} WHERE _id=${req.params.id}`
+  db.query(query, (err, data) => {
+    if(err){    
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    }
+    return res.send({"success":true, "data" : data});
+  })
+})
 
 app.listen(PORT, () => {
   console.log(`APP is now running on port ${PORT}!`);
