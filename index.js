@@ -820,7 +820,7 @@ app.get('/quiz', (req, res) => {
 })
 
 app.get('/questions', (req, res) => {
-  const query = 'SELECT * FROM questions;';
+  const query = 'SELECT * FROM question;';
   db.query(query, (err, data) => {
     if(err)
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
