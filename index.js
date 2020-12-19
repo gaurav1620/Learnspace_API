@@ -787,7 +787,7 @@ app.post('/deleteassignment/:id', (req, res) => {
 })
 
 app.post('/changeassignmentname/:id', (req, res) => {
-  const query = `UPDATE assignment SET title=${req.body.title} WHERE _id=${req.params.id}`
+  const query = `UPDATE assignment SET title=${req.body.title}, description=${req.body.description} WHERE _id=${req.params.id}`
   db.query(query, (err, data) => {
     if(err){    
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
@@ -797,7 +797,7 @@ app.post('/changeassignmentname/:id', (req, res) => {
 })
 
 app.post('/changecoursename/:id', (req, res) => {
-  const query = `UPDATE course SET name=${req.body.name} WHERE _id=${req.params.id}`
+  const query = `UPDATE course SET name=${req.body.name}, description=${req.body.description} WHERE _id=${req.params.id}`
   db.query(query, (err, data) => {
     if(err){    
       return res.status(400).send({"success":false, "error":err.name, "message": err.message});
