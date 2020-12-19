@@ -890,6 +890,56 @@ app.get('/questions/:quiz_id', (req, res) => {
   })
 })
 
+app.post('/startquiz/:id', (req,res) => {
+  const query = `UPDATE quiz SET is_active = TRUE WHERE _id = ${req.params.id};`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+app.post('/endquiz/:id', (req,res) => {
+  console.log('api for end quiz')
+  const query = `UPDATE quiz SET is_active = FALSE WHERE _id = ${req.params.id};`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+
+app.post('/submitquiz', (req,res) => {
+  const query = `INSERT INTO quiz_submission (quiz_id, student_id,total_marks, marks_obtained, ques_attempted, student_name, no_of_ques) \
+                  VALUES (${req.body.quiz_id}, ${req.body.student_id}, ${req.body.totalMarks}, ${req.body.marksObtained}, ${req.body.questionsAttempted}, '${req.body.studentName}', ${req.body.numberOfQuestions})`
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+app.get('/quizsubmissions', (req, res) => {
+  
+  let query = `SELECT * FROM quiz_submission ;`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+app.get('/quizresult/:quiz_id', (req, res) => {
+  let query = `SELECT * FROM quiz_submission WHERE quiz_id = ${req.params.quiz_id} ;`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+
 //const newQuery = `INSERT INTO question (quiz_id,question_title, question_type,option_1, option_2, option_3, option_4, correct_option, textual_ques_marks, min_char,QID)\
   //                        VALUES(${data.insertId}, '${q.questionTitle}', '${q.questionType}', '${q.option1}',  '${q.option2}',  '${q.option3}',  '${q.option4}',  ${q.correctOption},  ${q.textualQuesMarks},  ${q.minChar},  ${q.QID},);`;
 
