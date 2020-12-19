@@ -939,6 +939,70 @@ app.get('/quizresult/:quiz_id', (req, res) => {
   })
 })
 
+app.post('/deletequiz/:quiz_id', (req,res) => {
+  let query = `DELETE FROM quiz WHERE _id = ${req.params.quiz_id} ;`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+app.post('/deletequestion/:quiz_id', (req,res) => {
+  let query = `DELETE FROM question WHERE quiz_id = ${req.params.quiz_id} ;`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+app.post('/deletequizsubmission/:quiz_id', (req,res) => {
+  let query = `DELETE FROM quiz_submission WHERE quiz_id = ${req.params.quiz_id} ;`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+app.post('/renamequiz/:quiz_id', (req, res) => {
+  let query = `UPDATE quiz SET quiz_title = '${req.body.quiz_name}' WHERE _id = ${req.params.quiz_id} ;`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+
+app.get('/message', (req, res) => {
+  let query = `SELECT * FROM message ;`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+app.get('/messagesfromcourse/:course_id', (req, res) => {
+  let query = `SELECT * FROM message WHERE course_id = ${req.params.course_id} ;`;
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
+
+app.post('/message', (req,res) => {
+  const query = `INSERT INTO message (user_id,user_name, user_type, message_content, time_stamp,course_id) \
+                  VALUES (${req.body.user_id}, '${req.body.user_name}', '${req.body.user_type}', '${req.body.message_content}', '${req.body.time_stamp}', ${req.body.course_id})`
+  db.query(query, (err, data) => {
+    if(err)
+      return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    return res.send({"success":true, "data" : data});
+  })
+})
 
 //const newQuery = `INSERT INTO question (quiz_id,question_title, question_type,option_1, option_2, option_3, option_4, correct_option, textual_ques_marks, min_char,QID)\
   //                        VALUES(${data.insertId}, '${q.questionTitle}', '${q.questionType}', '${q.option1}',  '${q.option2}',  '${q.option3}',  '${q.option4}',  ${q.correctOption},  ${q.textualQuesMarks},  ${q.minChar},  ${q.QID},);`;
