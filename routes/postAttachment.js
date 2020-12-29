@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, upload) => {
   app.post('/attachments/:assignment_id',upload.single('train'), (req, res) => {
     if(!req.files){
       res.send({

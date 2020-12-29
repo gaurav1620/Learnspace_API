@@ -31,18 +31,19 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + "/"))
 app.use('/uploads', serveIndex(__dirname + '/uploads'));
 
-
-var upload = multer({ dest: 'uploads/' })
+let upload = multer({ dest: 'uploads/' })
 
 app.use(fileUpload({
     createParentPath: true
 }));
 
 fs.readdirSync(__dirname + '/routes').forEach(function(file) {
-          var name = file.substr(0, file.indexOf('.'));
-          require('./routes/' + name)(app, upload);
-      
+  let name = file.substr(0, file.indexOf('.')); 
+  if(name === 'postAttachment' || name === 'postSubmission')return;
+  require('./routes/' + name)(app);
 });
+require('./routes/postAttachment')(app, upload);
+require('./routes/postSubmission')(app, upload);
 app.listen(PORT, () => {
   console.log(`APP is now running on port ${PORT}!`);
 })
