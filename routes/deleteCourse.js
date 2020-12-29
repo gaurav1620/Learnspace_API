@@ -1,4 +1,4 @@
-module.exports = (app)=> {
+module.exports = (app, db)=> {
   app.post('/deletecourse', (req, res) => {
     const course_code = req.body.course_code;
     const course_id = req.body.course_id;

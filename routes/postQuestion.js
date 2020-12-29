@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.post('/question', (req,res) => {
     console.log(req.body)
     let q = req.body

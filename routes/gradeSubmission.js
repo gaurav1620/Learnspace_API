@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.post('/gradesubmission/:assignment_id/:student_id', (req,res) => {
     console.log("marks : ",req.body.marks);
     const query = `UPDATE submissions SET marks_obtained=${req.body.marks} WHERE assignment_id=${req.params.assignment_id} AND student_id=${req.params.student_id};`;

@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.post('/deleteassignment/:id', (req, res) => {
     const query = `DELETE FROM assignment WHERE _id=${req.params.id}`
     db.query(query, (err, data) => {

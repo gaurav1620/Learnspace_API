@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.get('/questions', (req, res) => {
     const query = 'SELECT * FROM question;';
     db.query(query, (err, data) => {

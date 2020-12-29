@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.get('/getstudentcount/:course_id', (req,res) => {
     const query = `SELECT COUNT(student_id) AS count FROM records WHERE course_id=${req.params.course_id};`;
     db.query(query, (err, data) => {

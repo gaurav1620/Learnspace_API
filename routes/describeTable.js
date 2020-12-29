@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.get('/describe/:tablename', (req, res)=>{
     const query = `DESCRIBE ${req.params.tablename};`;
     db.query(query, (err, data) => {

@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.get('/quizfromcourse/:id', (req, res) => {
     console.log('id is ', req.params.id)
     let query = `SELECT * FROM quiz WHERE course_id = ${req.params.id};`;

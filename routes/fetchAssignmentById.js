@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.get('/assignmentbyid/:id', (req,res) => {
     const query = `SELECT * FROM assignment WHERE _id=${req.params.id}`;
     db.query(query, (err, data) => {

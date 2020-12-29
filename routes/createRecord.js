@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.post('/records', (req, res) => {
     const query = `INSERT INTO records(student_id, course_id)\
                    VALUES(${req.body.student_id}, ${req.body.course_id});

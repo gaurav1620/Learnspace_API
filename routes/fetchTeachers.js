@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.get('/teacher', (req, res) => {
     const query = 'SELECT * FROM teacher;';
     db.query(query, (err, data) => {

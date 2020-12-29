@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.delete('/notes/:_id', (req, res) => {
     const query = `DELETE FROM notes WHERE _id=${req.params._id};`;
     db.query(query, (err, data) => {

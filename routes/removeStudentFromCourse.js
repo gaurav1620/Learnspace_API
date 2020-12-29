@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.post('/remove_from_course', (req, res) => {
     const query = `
     DELETE FROM records WHERE student_id='${req.body.student_id}' AND course_id='${req.body.course_id}';

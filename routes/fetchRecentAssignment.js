@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.get('/giveLastAss', (req,res) => {
     const query = `SELECT * FROM assignment ORDER BY _id DESC LIMIT 1`;
     db.query(query, (err, data) => {

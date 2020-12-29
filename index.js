@@ -40,10 +40,10 @@ app.use(fileUpload({
 fs.readdirSync(__dirname + '/routes').forEach(function(file) {
   let name = file.substr(0, file.indexOf('.')); 
   if(name === 'postAttachment' || name === 'postSubmission')return;
-  require('./routes/' + name)(app);
+  require('./routes/' + name)(app, db);
 });
-require('./routes/postAttachment')(app, upload);
-require('./routes/postSubmission')(app, upload);
+require('./routes/postAttachment')(app, db, upload);
+require('./routes/postSubmission')(app, db, upload);
 app.listen(PORT, () => {
   console.log(`APP is now running on port ${PORT}!`);
 })

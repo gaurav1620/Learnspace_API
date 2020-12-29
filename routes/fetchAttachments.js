@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.get('/attachments', (req,res) => {
     //res.sendFile(path.join(__dirname, 'uploads', 'test.txt'))
     const query = `SELECT * FROM attachments;`;

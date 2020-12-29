@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.get('/course/:course_code', (req,res) => {
     const query = `SELECT * FROM course WHERE course_code='${req.params.course_code}';`;
     db.query(query, (err, data) => {

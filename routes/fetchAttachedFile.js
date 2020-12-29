@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.get('/getattachedfile/:assignment_id', (req,res) => {
     //res.sendFile(path.join(__dirname, 'uploads', 'test.txt'))
     const query = `SELECT * FROM attachments WHERE assignment_id=${req.params.assignment_id};`;

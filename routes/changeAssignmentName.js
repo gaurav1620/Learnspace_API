@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.post('/changeassignmentname/:id', (req, res) => {
     const query = `UPDATE assignment SET title=${req.body.title}, description=${req.body.description} WHERE _id=${req.params.id}`
     db.query(query, (err, data) => {

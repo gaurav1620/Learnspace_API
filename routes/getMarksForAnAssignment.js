@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.get('/marks/:assignment_id', (req, res) => {
     const query = `SELECT submissions.marks_obtained, student._id  AS student_id, student.fname, student.lname FROM submissions LEFT JOIN student on submissions.student_id=student._id WHERE submissions.assignment_id=${req.params.assignment_id};`;
     db.query(query, (err, submitted) => {

@@ -1,4 +1,4 @@
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.post('/submitquiz', (req,res) => {
     const query = `INSERT INTO quiz_submission (quiz_id, student_id,total_marks, marks_obtained, ques_attempted, student_name, no_of_ques) \
                     VALUES (${req.body.quiz_id}, ${req.body.student_id}, ${req.body.totalMarks}, ${req.body.marksObtained}, ${req.body.questionsAttempted}, '${req.body.studentName}', ${req.body.numberOfQuestions})`
