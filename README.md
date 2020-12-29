@@ -1,4 +1,4 @@
-# DBMS_Backend
+# Learnspace_API
 
 A REST API created using Nodejs, Express, Mysql and hosted on Heroku.
 This API is used for LearnSpace™ application.
