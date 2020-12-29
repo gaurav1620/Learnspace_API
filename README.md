@@ -1,8 +1,11 @@
 # DBMS_Backend
 
-This a REST API created using Nodejs, Express, Mysql and hosted in Heroku.
+A REST API created using Nodejs, Express, Mysql and hosted on Heroku.
+This API is used for LearnSpace™ application.
 
-Ping the server [here](https://dbms-back.herokuapp.com/foo)
+[Click](https://github.com/yatish1606/DBMS_Frontend) to open Frontend Repo for this app.
 
-Use the demo app [here](http://dbms-front.herokuapp.com/registerlogin)
+Ping the server [here](https://dbms-back.herokuapp.com/foo).
+
+Use the demo app [here](http://dbms-front.herokuapp.com/registerlogin).
 
