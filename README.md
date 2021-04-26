@@ -20,7 +20,7 @@ Similarly, students will be able to join courses, view and download study materi
 
 LearnSpace™ creates beautiful downloadable assessment reports for the assignments and quizzes thus making it easier for the teacher to analyse, collect and visualise the class performance.
 
-The application is now available in both light as well as dark mode with increased features and functionalities. Follow the link http://dbms-front.herokuapp.com/registerlogin to explore more !
+The application is now available in both light as well as dark mode with increased features and functionalities. Follow the link http://dbms-front.herokuapp.com/registerlogin to explore more.
 
 
 Frontend Repo for this app is at [https://github.com/yatish1606/LearnSpace/](https://github.com/yatish1606/LearnSpace/)
