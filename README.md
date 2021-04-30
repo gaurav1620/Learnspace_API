@@ -5,10 +5,10 @@ This API is used for LearnSpace™ application.
 
 Created by :
 
-Yatish Kelkar
-Gaurav Khairnar
-Mahesh Nahak
-Kshitij Chitnis
+- [Yatish Kelkar](https://github.com/yatish1606)<br/>
+- [Gaurav Khairnar](https://github.com/gaurav1620)<br/>
+- [Mahesh Nahak](https://github.com/maheshn22)<br/>
+- [Kshitij Chitnis](https://github.com/m0rphtail)
 
 ## What is LearnSpace ?
 
