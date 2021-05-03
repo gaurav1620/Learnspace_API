@@ -1,4 +1,4 @@
-module.exports = (app, db) => {
+module.exports = (app, db, upload, fs) => {
   app.get('/messagesfromcourse/:course_id', (req, res) => {
     let query = `SELECT * FROM message WHERE course_id = ${req.params.course_id} ;`;
     db.query(query, (err, data) => {

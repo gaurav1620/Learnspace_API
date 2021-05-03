@@ -1,4 +1,4 @@
-module.exports = (app, db) => {
+module.exports = (app, db, upload, fs) => {
   app.get('/coursebyteacher/:teacher_id', (req,res) => {
     const query = `SELECT * FROM course WHERE teacher_id=${req.params.teacher_id};`;
     db.query(query, (err, data) => {
@@ -6,5 +6,5 @@ module.exports = (app, db) => {
         return res.status(400).send({"success":false, "error":err.name, "message": err.message});
       return res.send({"success":true, "data" : data});
     })
-  }) 
+  })
 }

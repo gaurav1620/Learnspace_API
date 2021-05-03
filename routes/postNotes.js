@@ -1,4 +1,4 @@
-module.exports = (app, db) => {
+module.exports = (app, db, upload, fs) => {
   app.post("/notes", (req, res) => {
     const query = `INSERT INTO notes(user_id, user_type, day, date, time, content)\
                  VALUES(${req.body.user_id}, '${req.body.user_type}', '${req.body.day}', '${req.body.date}', '${req.body.time}', '${req.body.content}');`;

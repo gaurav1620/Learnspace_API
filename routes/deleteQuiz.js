@@ -1,4 +1,4 @@
-module.exports = (app, db) => {
+module.exports = (app, db, upload, fs) => {
   app.post('/deletequiz/:quiz_id', (req,res) => {
     let query = `DELETE FROM quiz WHERE _id = ${req.params.quiz_id} ;`;
     db.query(query, (err, data) => {

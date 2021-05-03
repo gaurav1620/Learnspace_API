@@ -1,4 +1,4 @@
-module.exports = (app, db) => {
+module.exports = (app, db, upload, fs) => {
   app.post('/endquiz/:id', (req,res) => {
     console.log('api for end quiz')
     const query = `UPDATE quiz SET is_active = FALSE WHERE _id = ${req.params.id};`;

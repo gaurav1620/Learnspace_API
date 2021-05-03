@@ -1,4 +1,4 @@
-module.exports = (app, db) => {
+module.exports = (app, db, upload, fs) => {
   app.get('/course/:course_code', (req,res) => {
     const query = `SELECT * FROM course WHERE course_code='${req.params.course_code}';`;
     db.query(query, (err, data) => {
@@ -8,5 +8,5 @@ module.exports = (app, db) => {
         return res.status(404).send({"success":false, "error":err.name, "message": err.message});
       } else return res.send({"success":true, "data" : data});
     })
-  }) 
+  })
 }

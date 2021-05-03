@@ -1,4 +1,4 @@
-module.exports = (app, db) => {
+module.exports = (app, db, upload, fs) => {
   app.post('/question', (req,res) => {
     console.log(req.body)
     let q = req.body
@@ -11,8 +11,8 @@ module.exports = (app, db) => {
       query = `INSERT INTO question (quiz_id,question_title, question_type,option_1, option_2, option_3, option_4, correct_option, textual_ques_marks, min_char,QID, keywords)\
       VALUES(${q.quizID}, '${q.questionTitle}', '${q.questionType}', null,  null,  null,  null,  null,  ${q.textualQuesMarks},  ${q.minChar},  ${q.QID}, '${keywords}');`;
     }
-    
-    
+
+
     console.log('query is ', query)
     db.query(query, (err, data) => {
       if(err)

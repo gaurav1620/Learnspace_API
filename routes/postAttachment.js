@@ -1,4 +1,4 @@
-module.exports = (app, db, upload) => {
+module.exports = (app, db, upload, fs) => {
   app.post('/attachments/:assignment_id',upload.single('train'), (req, res) => {
     if(!req.files){
       res.send({
@@ -14,7 +14,7 @@ module.exports = (app, db, upload) => {
     file.mv('attachments/'+filename, (err) => {
       if(err)
         return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-      
+
       const query = `INSERT INTO attachments(filename, assignment_id)\
                      VALUES('${filename}', ${req.params.assignment_id});`;
       //console.log("Quer");
@@ -28,7 +28,7 @@ module.exports = (app, db, upload) => {
       fs.readFile(__dirname + '/uploads/' + filename, (err, data) => {
         if(err)
           return res.status(400).send({"success":false, "error":err.name, "message": err.message});
-        
+
         //console.log(data);
         const query = `INSERT INTO attachments(data, assignment_id, name, description)\
                        VALUES(${data}, 1, 'file1', 'file1');`;
@@ -42,7 +42,7 @@ module.exports = (app, db, upload) => {
       })
        */
     })
-    
+
 
     //console.log(file)
     //console.log(req.files)

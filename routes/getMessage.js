@@ -1,4 +1,4 @@
-module.exports = (app, db) => {
+module.exports = (app, db, upload, fs) => {
   app.get('/message', (req, res) => {
     let query = `SELECT * FROM message ;`;
     db.query(query, (err, data) => {

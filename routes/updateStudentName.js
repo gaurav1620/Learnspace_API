@@ -1,4 +1,4 @@
-module.exports = (app, db) => {
+module.exports = (app, db, upload, fs) => {
   app.post('/updatestudentname', (req, res) => {
     console.log(req.body);
     const query = `UPDATE student SET fname='${req.body.fname}', lname='${req.body.lname}' WHERE email='${req.body.email}';`

@@ -1,6 +1,6 @@
-module.exports = (app, db) => {
+module.exports = (app, db, upload, fs) => {
   app.get('/quizsubmissions', (req, res) => {
-    
+
     let query = `SELECT * FROM quiz_submission ;`;
     db.query(query, (err, data) => {
       if(err)

@@ -1,4 +1,4 @@
-module.exports = (app, db) => {
+module.exports = (app, db, upload, fs) => {
   app.post('/assignment', (req, res) => {
     const query = `INSERT INTO assignment(course_id, title, description, due_date, max_marks, is_assignment)\
                    VALUES(${req.body.course_id}, '${req.body.title}', '${req.body.description}', '${req.body.due_date}', ${req.body.max_marks}, ${req.body.is_assignment});`;

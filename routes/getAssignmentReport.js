@@ -1,4 +1,4 @@
-module.exports = (app, db) => {
+module.exports = (app, db, upload, fs) => {
   app.get('/get_report/:assignment_id', (req, res)=>{
     const query =`CALL send_report('${req.param.assignment_id}')`;
     db.query(query, (err, data) => {

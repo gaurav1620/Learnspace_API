@@ -8,7 +8,7 @@ const fileUpload = require('express-fileupload');
 const multer  = require('multer')
 const serveIndex = require('serve-index');
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8001;
 
 const app = express();
 app.use(cors());
@@ -39,11 +39,8 @@ app.use(fileUpload({
 
 fs.readdirSync(__dirname + '/routes').forEach(function(file) {
   let name = file.substr(0, file.indexOf('.')); 
-  if(name === 'postAttachment' || name === 'postSubmission')return;
-  require('./routes/' + name)(app, db);
+  require('./routes/' + name)(app, db, upload, fs);
 });
-require('./routes/postAttachment')(app, db, upload);
-require('./routes/postSubmission')(app, db, upload);
 app.listen(PORT, () => {
   console.log(`APP is now running on port ${PORT}!`);
 })
